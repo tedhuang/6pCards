@@ -1,0 +1,52 @@
+#searchformcontainer {
+  padding: 0;
+  margin: 0;
+}
+#searchformcontainer + ul {
+  margin-top: 0;
+}
+#searchformcontainer form {
+  position: relative;
+  padding: 18px 12px 12px 12px;
+  margin: 0;
+}
+#searchformcontainer form p {
+  margin: 0.75em 0 0 0;
+}
+#searchformcontainer fieldset + fieldset {
+  margin: 0 4px;
+}
+#searchformcontainer fieldset select {
+  float: left;
+  width: 49%;
+}
+#searchformcontainer fieldset select + select {
+  float: right;
+}
+#searchformcontainer .inputcombo  {
+  margin-bottom: 6px;
+}
+#searchformcontainer .inputcombo .forminput {
+  width: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidenavHeader {
+  position: relative;
+  margin-left: 0px;
+  margin-right: 0px;
+  min-height: 29px;
+}
+.sidenavHeader .sidenav2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.sidenavHeader h2 {
+  text-align: center;
+  padding: 0 7em;
+}

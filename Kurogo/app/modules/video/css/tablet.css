@@ -1,0 +1,26 @@
+body.VideoModule #navbar, #videoDetailWrapper {
+	/* Background color for video listing and detail; should be white in most cases */
+    background-color: #fff;
+}
+
+.video {
+    padding: 12px;
+}
+
+.splitview ul.results li.video .thumbnail {
+	width: 120px;
+}
+
+li.noimage {
+    padding-left: .4em;
+}
+
+.videobuttons {
+	float: right;
+	margin: -2px 2px 6px 12px;
+}
+
+.videobuttons #bookmarkContainer, .videobuttons #share {
+	float: right;
+	margin: 0 0 0 12px;
+}

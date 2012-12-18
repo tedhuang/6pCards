@@ -1,0 +1,20 @@
+#download {
+	text-align: left;
+	clear: both;
+	padding: 20px 10px 20px 10px;
+}
+#download a {
+	text-decoration: none;
+}
+#download a:hover {
+	color: #a00;
+}
+.banner-notice {
+  background-image: url('/common/images/alert.gif');
+  background-position: 5px center;
+  border: solid 1px #ccc;
+}
+.banner-notice .banner-message, .banner-notice a.banner-message { 
+  background-image: none;
+  padding: 8px 8px 8px 36px;
+}
