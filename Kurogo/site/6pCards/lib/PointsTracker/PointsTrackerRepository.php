@@ -1,8 +1,6 @@
 <?php
 
-Kurogo::includePackage('Utilities');
-
-class PointsTracker extends Repository{
+class PointsTrackerRepository extends Repository{
 	
 	protected function init($options){
 		$this->createTables();
@@ -20,8 +18,101 @@ class PointsTracker extends Repository{
 		return true;
 	}
 
-
-
+	public function createGame($points_to_win = 50){
+		$conn = self::connection();
+		$sql = "INSERT INTO games (status, points_to_win) VALUES ('STARTED', ?)";
+		$conn->query($sql, array($points_to_win));
+		
+		$lastInsert = $conn->lastInsertId('game_id');		
+		if($lastInsert != ""){
+			return $lastInsert;
+		}
+		else{
+			return false;
+		}
+	}
 	
+	public function createPlayer($player_name){
+		$conn = self::connection();
+		$sql = "INSERT IGNORE INTO players (player_name) VALUES (?) ";
+		$conn->query($sql, array($player_name));
+		
+		$lastInsert = $conn->lastInsertId('player_id');		
+		if($lastInsert != ""){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function setScore($game_id, $team_color, $player_name, $points_earned){
+		$conn = self::connection();
+		$sql = "INSERT INTO score (game_id, team_color, player_name, date, points_earned ) VALUES (?,?,?,CURDATE(),?)";
+		$conn->query($sql, array($game_id, $team_color, $player_name, $points_earned));
+		
+		$lastInsert = $conn->lastInsertId('score_id');		
+		if($lastInsert != ""){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function updateGame($game_id, $status, $tag = null, $isOverpoints = 0){
+		$conn = self::connection();
+		$sql = "UPDATE games SET status=?, tag=? isOverpoints=? WHERE game_id=?";
+		$conn->query($sql, array($status, $tag, $isOverpoints, $game_id));
+		
+		return true;
+	}
+	
+	public function isGameComplete($game_id){
+		$conn = self::connection();
+		$sql = "SELECT SUM(points_earned) AS total_points FROM score WHERE game_id=?";
+		$results = $conn->query($sql, array($game_id));
+		$row = $results->fetch();
+		
+		$total_points = $row['total_points'];
+		
+		$sql = "SELECT points_to_win FROM games";
+		$result = $conn->query($sql);
+		$row = $results->fetch();
+	
+		$points_to_win = $row['points_to_win'];
+		
+		//TODO: implement checks for overpoints feature
+		
+		if($total_points >= $points_to_win){			
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function getScoreboard(){
+		$conn = self::connection();
+		
+	}
+	
+	public function getStats(){
+		$conn = self::connection();
+		
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
