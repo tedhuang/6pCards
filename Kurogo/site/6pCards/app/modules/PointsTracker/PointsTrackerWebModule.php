@@ -19,6 +19,8 @@ class PointsTrackerWebModule extends WebModule
 		/* Load Javascript CSS Libraries */
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js');
+		$this->addInternalJavascript('/common/javascript/lib/jquery.ui.touch-punch.min.js');
+		$this->addInternalJavascript('/common/javascript/lib/json2.js');
 //		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/');
 //		$this->addInternalJavascript('/common/javascript/lib/d3.v2.min.js');
 //		$this->addInternalJavascript('/common/javascript/lib/swipe.js');

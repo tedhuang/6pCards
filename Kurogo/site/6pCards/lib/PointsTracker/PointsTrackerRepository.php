@@ -21,15 +21,11 @@ class PointsTrackerRepository extends Repository{
 	public function createGame($playersArray, $points_to_win = 50){
 		$conn = self::connection();
 		
-		if(count($playersArray) == 0 || count($playersArray['BLUE']) != 3 || count($playersArray['RED']) != 3){
-			return false;
-		}
-		
 		$teamRed = implode('|',$playersArray['RED']);
 		$teamBlue = implode('|',$playersArray['BLUE']);
 		
-		$sql = "INSERT INTO games (points_to_win, team_red, team_blue) VALUES ('STARTED', ?, ?)";
-		$conn->query($sql, array($points_to_win));
+		$sql = "INSERT INTO games (points_to_win, team_red, team_blue) VALUES (?, ?, ?)";
+		$conn->query($sql, array($points_to_win, $teamRed, $teamBlue));
 		
 		$lastInsert = $conn->lastInsertId('game_id');		
 		if($lastInsert != ""){

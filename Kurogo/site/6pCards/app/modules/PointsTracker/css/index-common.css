@@ -1,12 +1,22 @@
 
-#container{
-	padding: 0 10px 0 10px;
+
+
+
+.new-game-container{
+		padding: 0 10px 0 10px;
 }
 
+.game-details-container{
+	display:none;
+}
+
+.players-selection-container{
+
+}
 
 .players-container{
 	padding: 5px;
-	border: 2px solid #ccc;
+	border: 2px solid #ccc;]
 }
 
 .player-container{
@@ -16,14 +26,21 @@
 	border: 2px solid #999;
 	border-radius: 5px;
 	overflow:hidden;
+	position:relative;
+	cursor:pointer;
 }
 
 .player-container .SELECTED{
 
 }
 
-.player-container img{
-	position:relative;
+.player-container .checkbox{
+	position:absolute;
+	z-index:3;
+	top: 0;
+	width: 60px;
+	height: 60px;
+	display:none;
 }
 
 .player-container span{
@@ -44,17 +61,31 @@
 	z-index: 2;
 }
 
+.players-controls{
+	display:none;
+}
+
+
+.team-selection-container{
+	display:none;
+}
+
 .team-container{
 	box-sizing:border-box;
-	width: 100%;
-	height: 300px;
+	height: 250px;
 	border: 2px solid #999;
 	border-radius: 5px;
 	padding:1px;
 	margin: 10px 0 10px 0;
-	font-weight:bold;
+	
+}
+
+.team-container .player-num-red,
+.team-container .player-num-blue{
 	font-size: 0.70em;
+	font-weight:bold;
 	text-align:center;
+	width: 100%;
 }
 
 .team-container-red{

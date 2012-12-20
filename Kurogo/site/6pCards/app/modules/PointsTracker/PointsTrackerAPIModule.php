@@ -2,7 +2,7 @@
 
 Kurogo::includePackage('PointsTracker');
 
-class PointsTrackerAPIModule extends PointsTrackerAPIModule {
+class PointsTrackerAPIModule extends APIModule {
 	
 	protected $PointsTrackerRepository;
 	
@@ -60,25 +60,34 @@ class PointsTrackerAPIModule extends PointsTrackerAPIModule {
         	
         	case "createGame":
         		$success = false;
+        		$curr_game_id = false;
+        		$message = "no message";
         		
 				$points_to_win = $this->getArg('points_to_win', 50);
 				$red_team = $this->getArg('red_team', null);
 				$blue_team = $this->getArg('blue_team', null);
 				
+				$players = array();
+				$players["RED"] = json_decode($red_team);
+				$players["BLUE"] = json_decode($blue_team);
 				
-				
-				
-				$curr_game_id = $this->PointsTrackerRepository->createGame($points_to_win);
-				
-				if($curr_game_id){
-					$_SESSION['curr_game_id'] = $curr_game_id;
+				if(count($players["RED"]) == 3 || count($players["BLUE"]) == 3){
+					$curr_game_id = $this->PointsTrackerRepository->createGame($players, $points_to_win);
+					
+					if($curr_game_id !== false){
+						$_SESSION['curr_game_id'] = $curr_game_id;
+						$success = true;
+					}
+					else{
+						$message = "Repository create game failed";
+					}
 				}
 				else{
-					$this->redirectTo("pageError", array("message"=>""));
+					$message = "Player numbers are invalid";
 				}
+				
         		
-        		
-        		$response = array( 'success' =>  $success);     	
+        		$response = array( 'success' =>  $success, "message" => $message, "game_id" =>  $curr_game_id);     	
             	$this->setResponse($response);
             	$this->setResponseVersion(1);
         		break;
