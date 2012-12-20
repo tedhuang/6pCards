@@ -1,0 +1,22 @@
+
+.floatLeft{
+	float:left;
+}
+
+.floatRight{
+	float:right;
+}
+
+.clear{
+	clear:both;
+}
+
+.center{
+	text-align:center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hidden{
+	display:hidden;
+}

@@ -18,28 +18,22 @@ class PointsTrackerRepository extends Repository{
 		return true;
 	}
 
-	public function createGame($points_to_win = 50){
+	public function createGame($playersArray, $points_to_win = 50){
 		$conn = self::connection();
-		$sql = "INSERT INTO games (status, points_to_win) VALUES ('STARTED', ?)";
+		
+		if(count($playersArray) == 0 || count($playersArray['BLUE']) != 3 || count($playersArray['RED']) != 3){
+			return false;
+		}
+		
+		$teamRed = implode('|',$playersArray['RED']);
+		$teamBlue = implode('|',$playersArray['BLUE']);
+		
+		$sql = "INSERT INTO games (points_to_win, team_red, team_blue) VALUES ('STARTED', ?, ?)";
 		$conn->query($sql, array($points_to_win));
 		
 		$lastInsert = $conn->lastInsertId('game_id');		
 		if($lastInsert != ""){
 			return $lastInsert;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	public function createPlayer($player_name){
-		$conn = self::connection();
-		$sql = "INSERT IGNORE INTO players (player_name) VALUES (?) ";
-		$conn->query($sql, array($player_name));
-		
-		$lastInsert = $conn->lastInsertId('player_id');		
-		if($lastInsert != ""){
-			return true;
 		}
 		else{
 			return false;
@@ -91,6 +85,49 @@ class PointsTrackerRepository extends Repository{
 			return false;
 		}
 	}
+	
+	public function getActiveGames(){
+		$conn = self::connection();
+		$sql = "SELECT * FROM games WHERE status='STARTED'";
+		$result = $conn->query($sql);
+		return $result->fetchAll();
+	}
+	
+	public function createPlayer($player_name){
+		$conn = self::connection();
+		$sql = "INSERT IGNORE INTO players (player_name) VALUES (?) ";
+		$conn->query($sql, array($player_name));
+		
+		$lastInsert = $conn->lastInsertId('player_id');		
+		if($lastInsert != ""){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function getAllPlayers(){
+		$conn = self::connection();
+		$sql = "SELECT * FROM players";
+		$result = $conn->query($sql);
+		
+		return $result->fetchAll();
+	}
+	
+	public function getPlayerByName($name){
+		$conn = self::connection();
+		$sql = "SELECT * FROM players WHERE player_name=?";
+		$result = $conn->query($sql, array($name));
+		$row = $result->fetch();
+		if(!empty($row)){
+			return $row;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	
 	public function getScoreboard(){
 		$conn = self::connection();

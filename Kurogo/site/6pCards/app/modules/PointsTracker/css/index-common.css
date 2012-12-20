@@ -1,0 +1,95 @@
+
+#container{
+	padding: 0 10px 0 10px;
+}
+
+
+.players-container{
+	padding: 5px;
+	border: 2px solid #ccc;
+}
+
+.player-container{
+	float: left;
+	margin: 2px;
+	padding: 2px;
+	border: 2px solid #999;
+	border-radius: 5px;
+	overflow:hidden;
+}
+
+.player-container .SELECTED{
+
+}
+
+.player-container img{
+	position:relative;
+}
+
+.player-container span{
+	width: 100%;
+	font-weight: bold;
+	font-size: 0.65em;
+	color: #fff;
+	background: rgba(0,0,0,0.4);
+	height: 20px;
+	margin-top: -25px;
+	display:block;
+	padding-left: 3px;
+	box-sizing:border-box;
+	white-space: nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	position:relative;
+	z-index: 2;
+}
+
+.team-container{
+	box-sizing:border-box;
+	width: 100%;
+	height: 300px;
+	border: 2px solid #999;
+	border-radius: 5px;
+	padding:1px;
+	margin: 10px 0 10px 0;
+	font-weight:bold;
+	font-size: 0.70em;
+	text-align:center;
+}
+
+.team-container-red{
+	float:left;
+	height: 100%;
+	width: 48%;
+	border-right: 2px solid #ccc;
+	color: #f00;
+}
+
+.team-container-blue{
+	float:right;
+	height: 100%;
+	width: 48%;
+	border-left: 2px solid #ccc;
+	color:#00f
+}
+
+.team-controls{
+	display:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
