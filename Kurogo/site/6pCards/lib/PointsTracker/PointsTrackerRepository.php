@@ -89,6 +89,20 @@ class PointsTrackerRepository extends Repository{
 		return $result->fetchAll();
 	}
 	
+	public function getGameById($game_id){
+		$conn = self::connection();
+		$sql = "SELECT * FROM games WHERE game_id=?";
+		$result = $conn->query($sql, array($game_id));
+		$row = $result->fetch();
+		
+		if(!empty($row)){
+			return $row;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public function createPlayer($player_name){
 		$conn = self::connection();
 		$sql = "INSERT IGNORE INTO players (player_name) VALUES (?) ";

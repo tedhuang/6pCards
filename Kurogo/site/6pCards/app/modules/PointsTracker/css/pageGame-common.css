@@ -1,0 +1,39 @@
+
+
+.separator{
+	height: 20px;
+}
+
+
+
+.player-container{
+	float: left;
+	margin: 2px;
+	padding: 2px;
+	border: 2px solid #999;
+	border-radius: 5px;
+	overflow:hidden;
+	position:relative;
+	cursor:pointer;
+	line-height: normal;
+	width: 40px;
+	height: 40px
+}
+
+.player-container span{
+	width: 100%;
+	font-weight: bold;
+	font-size: 0.6em;
+	color: #fff;
+	background: rgba(0,0,0,0.4);
+	height: 20px;
+	margin-top: -25px;
+	display:block;
+	padding-left: 3px;
+	box-sizing:border-box;
+	white-space: nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	position:relative;
+	z-index: 2;
+}

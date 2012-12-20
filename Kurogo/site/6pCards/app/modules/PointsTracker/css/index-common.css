@@ -3,7 +3,7 @@
 
 
 .new-game-container{
-		padding: 0 10px 0 10px;
+	padding: 0 10px 0 10px;
 }
 
 .game-details-container{
@@ -16,7 +16,7 @@
 
 .players-container{
 	padding: 5px;
-	border: 2px solid #ccc;]
+	border: 2px solid #ccc;
 }
 
 .player-container{
@@ -28,20 +28,10 @@
 	overflow:hidden;
 	position:relative;
 	cursor:pointer;
+	line-height: normal
 }
 
-.player-container .SELECTED{
 
-}
-
-.player-container .checkbox{
-	position:absolute;
-	z-index:3;
-	top: 0;
-	width: 60px;
-	height: 60px;
-	display:none;
-}
 
 .player-container span{
 	width: 100%;
@@ -60,6 +50,20 @@
 	position:relative;
 	z-index: 2;
 }
+
+.player-container .SELECTED{
+
+}
+
+.player-container .checkbox{
+	position:absolute;
+	z-index:3;
+	top: 0;
+	width: 60px;
+	height: 60px;
+	display:none;
+}
+
 
 .players-controls{
 	display:none;
