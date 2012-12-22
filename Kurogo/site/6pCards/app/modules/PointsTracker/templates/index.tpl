@@ -76,7 +76,6 @@
 	</div>
 </div>
 
-{include file="findInclude:common/templates/footer.tpl"}
 
 
 

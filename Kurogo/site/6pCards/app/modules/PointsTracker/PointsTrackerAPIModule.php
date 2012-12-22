@@ -19,34 +19,78 @@ class PointsTrackerAPIModule extends APIModule {
 		$this->PointsTrackerRepository = Repository::factory("PointsTrackerRepository", null);
 
         switch ($this->command) {
-        	case "setScore":
+        	case "sendScore":
         		$success 		= false;
         		$isComplete 	= false;
-        		$team_color 	= $this->getArg('team_color');
-        		$player_name 	= $this->getArg('player_name');
-    			$points_earned 	= $this->getArg('points_earned');
-        		
-        		//Make sure you can only add score if game is not complete
-        		if(!$this->PointsTrackerRepository->isGameComplete($_SESSION['game_id'])){
-        			
-        			//Add a new score value with parameters
-	        		if( $this->PointsTrackerRepository->setScore($_SESSION['game_id'], $team_color, $player_name, $points_earned) ){
-	        			$success = true;
-	        			
-	        			//Check if adding score caused game to complete
-	        			if($this->PointsTrackerRepository->isGameComplete($_SESSION['game_id'])){
-	        				$isComplete = true;
-	        				
-	        				$this->PointsTrackerRepository->updateGame($_SESSION['game_id'], "COMPLETE");
-	        			}
-	        		}
-        		}
+        		$message		= "No message";
+        		$score_result	= array();
+				$placement 		= json_decode($this->getArg('placement', null));
+				$game_id		= $this->getArg('game_id', null);
 
-        		$response = array( 'success' =>  $success, 'isComplete' => $isComplete);     	
+				
+				if(is_null($game_id) || is_null($placement)){
+					$message = "Parameters invalid. game_id: " + $game_id;					
+				}
+				else{
+					//echo $this->PointsTrackerRepository->isGameComplete($game_id);
+					
+	        		//Make sure you can only add score if game is not complete
+	        		if(!$this->PointsTrackerRepository->isGameComplete($game_id)){
+	        			
+	        			$p_data = array();
+    					for($i = 0; $i < count($placement); $i++){
+   						
+							$temp = explode('-', $placement[$i]);
+							$player = array();
+							$player['player_name'] = $temp[0];
+							$player['team_color'] = $temp[1];
+							
+							$p_data[$i]  = $player;
+						}
+
+	        			//Add a new score value with parameters
+	        			$score_result = $this->PointsTrackerRepository->addScore($game_id, $p_data);
+	        			
+		        		if( $score_result !== false ){
+		        			$success = true;
+		        			
+		        			//Check if adding score caused game to complete
+		        			if($this->PointsTrackerRepository->isGameComplete($game_id)){
+		        				$isComplete = true;
+		        				$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE");
+		        			}
+		        		}
+		        		else{
+		        			$message = "score result was false";
+		        		}
+	        		}
+	        		else{
+	        			$message = "Game is already completed";
+	        		}
+				}
+  
+        		$response = array( 'success' =>  $success, 
+								   'isComplete' => $isComplete, 
+								   'message' => $message,
+								   'score_result' => $score_result);     	
             	$this->setResponse($response);
             	$this->setResponseVersion(1);
         		break;
         	
+        	case "removeScore":
+        		$success = false;
+        		$score_id = $this->getArg('score_id', null);
+        		
+        		if(!is_null($score_id)){
+        			$this->PointsTrackerRepository->deleteScore($score_id);
+        			$success = true;
+        		}
+        	
+        		$response = array( 'success' =>  $success);     	
+            	$this->setResponse($response);
+            	$this->setResponseVersion(1);
+            	break;
+            	
         	case "createPlayer":
         		$player_name = $this->getArg('player_name');
         		if( $this->PointsTrackerRepository->createPlayer($player_name) ){

@@ -8,7 +8,7 @@ class PointsTrackerRepository extends Repository{
 	
 	private function createTables(){
 //		$conn = self::connection();
-//		$checkSql = "SELECT 1 FROM score";
+//		$checkSql = "SELECT 1 FROM games";
 //
 //		if (!$result = $conn->query($checkSql, array(), db::IGNORE_ERRORS)) {
 //			$createSQL = file_get_contents(DATA_DIR . "/PointsTracker/create_tables.sql");
@@ -36,21 +36,8 @@ class PointsTrackerRepository extends Repository{
 		}
 	}
 	
-	public function setScore($game_id, $team_color, $player_name, $points_earned){
-		$conn = self::connection();
-		$sql = "INSERT INTO score (game_id, team_color, player_name, date, points_earned ) VALUES (?,?,?,CURDATE(),?)";
-		$conn->query($sql, array($game_id, $team_color, $player_name, $points_earned));
-		
-		$lastInsert = $conn->lastInsertId('score_id');		
-		if($lastInsert != ""){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	public function updateGame($game_id, $status, $tag = null, $isOverpoints = 0){
+
+	public function updateGame($game_id, $status, $tag = "", $isOverpoints = 0){
 		$conn = self::connection();
 		$sql = "UPDATE games SET status=?, tag=? isOverpoints=? WHERE game_id=?";
 		$conn->query($sql, array($status, $tag, $isOverpoints, $game_id));
@@ -60,26 +47,34 @@ class PointsTrackerRepository extends Repository{
 	
 	public function isGameComplete($game_id){
 		$conn = self::connection();
-		$sql = "SELECT SUM(points_earned) AS total_points FROM score WHERE game_id=?";
+		$sql = "SELECT SUM(score_red_team) AS score_red, SUM(score_blue_team) AS score_blue FROM game_score WHERE game_id=?";
 		$results = $conn->query($sql, array($game_id));
 		$row = $results->fetch();
 		
-		$total_points = $row['total_points'];
+		return false;
 		
-		$sql = "SELECT points_to_win FROM games";
-		$result = $conn->query($sql);
-		$row = $results->fetch();
-	
-		$points_to_win = $row['points_to_win'];
-		
-		//TODO: implement checks for overpoints feature
-		
-		if($total_points >= $points_to_win){			
-			return true;
-		}
-		else{
-			return false;
-		}
+//		if(empty($row)){
+//			return false;
+//		}
+//		else{
+//			$score_red = $row['score_red'];
+//			$score_blue = $row['score_blue'];
+//			
+//			$sql = "SELECT points_to_win FROM games";
+//			$result = $conn->query($sql);
+//			$row = $results->fetch();
+//		
+//			$points_to_win = $row['points_to_win'];
+//
+//			//TODO: implement checks for overpoints feature
+//			
+//			if($score_red >= $points_to_win || $score_blue >= $points_to_win){
+//				return true;
+//			}
+//			else{
+//				return false;
+//			}
+//		}
 	}
 	
 	public function getActiveGames(){
@@ -146,6 +141,175 @@ class PointsTrackerRepository extends Repository{
 	
 	public function getStats(){
 		$conn = self::connection();
+		
+	}
+	
+	public function getScoreByGame($game_id, $isSummed){
+		$conn = self::connection();
+		$sql = "SELECT * FROM game_score WHERE game_id=? ORDER BY timestamp ASC";
+		$result = $conn->query($sql, array($game_id));
+		
+		if(!$isSummed){
+			return $result->fetchAll();
+		}
+		else{
+			$score_summed = $result->fetchAll();
+			$sum_red = 0;
+			$sum_blue = 0;
+
+			for($i = 0; $i <count($score_summed); $i++){
+				$score_summed[$i]['count'] = $i+1;
+				
+				$score_summed[$i]['score_red_team'] += $sum_red;
+				$sum_red = $score_summed[$i]['score_red_team'];
+
+				$score_summed[$i]['score_blue_team'] += $sum_blue;
+				$sum_blue = $score_summed[$i]['score_blue_team'];
+			}
+			
+			return $score_summed;
+		}
+		
+	}
+	
+	public function getLastestScore($game_id){
+		$conn = self::connection();
+		$sql = "SELECT SUM(score_red_team) AS t_red, SUM(score_blue_team) AS t_blue FROM game_score WHERE game_id=?";
+		$result = $conn->query($sql, array($game_id));
+		$row = $result->fetch();
+		return array('RED' => $row['t_red'], 'BLUE' => $row['t_blue']);	
+	}
+	
+	public function deleteScore($game_id){
+		$conn = self::connection();
+		$sql = "DELETE FROM game_score WHERE score_id=?";
+		$conn->query($sql, array($game_id));
+		return true;
+	}
+	
+	public function addScore($game_id, $p_data){
+		$conn = self::connection();
+
+		$result = $this->calculateScore($p_data);
+
+		if($result !== false){
+			$sql = "INSERT INTO game_score (game_id, score_red_team, score_blue_team) VALUES (?,?,?)";
+			$conn->query($sql, array($game_id, $result['RED'],  $result['BLUE']));
+
+			$lastInsert = $conn->lastInsertId('score_id');		
+			if($lastInsert != ""){
+				
+				//TODO: insert individual player scores here
+				
+				//TODO: sum all scores for the game for red and blue
+				
+				return array('score_id' => $lastInsert, 'scores' => $this->getLastestScore($game_id));
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	
+	private function calculateScore($p_data){
+		
+		/*
+		 * Checks below are implemented so that they assume the cases above them have been checked already
+		 */
+		function isTenZero($data, $team_color){
+			if( $data[0]['team_color'] == $team_color  && 
+				$data[1]['team_color'] == $team_color &&
+				$data[2]['team_color'] == $team_color )
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		//Must be 1st, 2nd, and 4th or 5th
+		function isFiveZero($p_data, $team_color){
+			if( $p_data[0]['team_color'] == $team_color  && $p_data[1]['team_color'] == $team_color && 
+				( $p_data[3]['team_color'] == $team_color || $p_data[4]['team_color'] == $team_color  ) )
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		//Must be 1st, 2nd or 1st, 5th and not be last
+		function isFiveTwo($p_data, $team_color){
+			if( $p_data[0]['team_color'] == $team_color  && 
+				( $p_data[1]['team_color'] == $team_color ||  
+					($p_data[4]['team_color'] == $team_color && $p_data[5]['team_color'] != $team_color)
+				)
+			){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		//Must be 2nd, 5th or 2nd, 3rd and 4th (not 1st)
+		function isFourThree($p_data, $team_color){
+			if( $p_data[0]['team_color'] != $team_color &&
+			    $p_data[1]['team_color'] == $team_color && 
+			    ( $p_data[4]['team_color'] == $team_color ||
+			      $p_data[2]['team_color'] == $team_color && $p_data[3]['team_color'] == $team_color )
+			){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		
+		$red_score = 0;
+		$blue_score = 0;
+		
+		if(isTenZero($p_data, 'RED')){
+			$red_score = 10;
+		}
+		else if(isTenZero($p_data, 'BLUE')){
+			$blue_score = 10;
+		}
+		else if(isFiveZero($p_data, 'RED')){
+			$red_score = 5;
+		}
+		else if(isFiveZero($p_data, 'BLUE')){
+			$blue_score = 5;
+		}
+		else if(isFiveTwo($p_data, 'RED')){
+			$red_score = 5;
+			$blue_score = 2;
+		}
+		else if(isFiveTwo($p_data, 'BLUE')){
+			$red_score = 2;
+			$blue_score = 5;
+		}
+		else if(isFourThree($p_data, 'RED')){
+			$red_score = 4;
+			$blue_score = 3;
+		}
+		else if(isFourThree($p_data, 'BLUE')){
+			$red_score = 3;
+			$blue_score = 4;
+		}
+		else{
+			return false;
+		}
+		
+		return array('RED' => $red_score, 'BLUE' => $blue_score);
 		
 	}
 	

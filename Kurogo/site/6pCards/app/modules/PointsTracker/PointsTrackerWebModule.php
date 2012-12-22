@@ -48,12 +48,11 @@ class PointsTrackerWebModule extends WebModule
 			case 'pageGame':
 				$game_id = $this->getArg("game_id");
 				$game =  $this->PointsTrackerRepository->getGameById($game_id);
-				
+				$score_record = $this->PointsTrackerRepository->getScoreByGame($game_id, true);
 				
 				if($game === false){
 					$this->redirectTo('pageError', array("message" => "Game does not exist"));
 				}
-				
 				
 				foreach( explode('|',$game['team_red']) as $name){
 					$player =  $this->PointsTrackerRepository->getPlayerByName($name);
@@ -65,7 +64,7 @@ class PointsTrackerWebModule extends WebModule
 					$game['t_blue'][$name] = $player;
 				}
 				
-				
+				$this->assign("score_record", $score_record);
 				$this->assign("game", $game);
 				break;		
 			
