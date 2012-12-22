@@ -115,23 +115,24 @@ function sendScore(placement_array){
 	
 	 var params = {"placement" :  JSON.stringify(placement_array), "game_id" : getUrlVars()['game_id']};
 	 
-	 console.log(placement_array);
+	// console.log(placement_array);
 	 
 	makeAPICall('POST', "PointsTracker" , 'sendScore', params, function(response){
 		if(response.success){
+			
+			console.log(response);
+			var new_score = "<tr><td class='round_num'>"+($(".round_num").length+1)+"</td>" +
+								"<td>"+response.score_result.scores.RED+"</td>" +
+								"<td>"+response.score_result.scores.BLUE+"</td>" +
+								"<td><img class='delete_score' src='./common/images/critical.png' title='"+response.score_result.score_id+"' /></td></tr>";
+			$(".score-table").append(new_score);
+			
 			if(response.isComplete){
 				//Game is complete, redirect to scoreboard
 				alert("Game finished");
+				window.location = "./pageScoreboard?game_id=" + getUrlVars()['game_id'];
 			}
 			else{
-				console.log(response);
-				var new_score = "<tr><td class='round_num'>"+($(".round_num").length+1)+"</td>" +
-									"<td>"+response.score_result.scores.RED+"</td>" +
-									"<td>"+response.score_result.scores.BLUE+"</td>" +
-									"<td><img class='delete_score' src='./common/images/critical.png' title='"+response.score_result.score_id+"' /></td></tr>";
-
-				$(".score-table").append(new_score);
-				
 				resetScoreControl();
 			}
 		}
@@ -144,10 +145,10 @@ function sendScore(placement_array){
 function deleteScore(score_id){
 	var r=confirm("Are you sure?");
 	if (r==true){
-		makeAPICall('POST', "d" , 'sendScore', {'score_id': score_id}, function(response){
+		makeAPICall('POST', "PointsTracker" , 'removeScore', {'score_id': score_id}, function(response){
 			if(response.success){
-				$(".delete_score[title="+score_id+"]").parents("tr").remove();
-				alert("Score Removed");
+				window.location.reload();
+				//$(".delete_score[title="+score_id+"]").parents("tr").remove();
 			}
 			else{
 				alert("Failed to delete score. Error: " + response.message);

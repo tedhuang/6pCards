@@ -32,7 +32,7 @@ class PointsTrackerAPIModule extends APIModule {
 					$message = "Parameters invalid. game_id: " + $game_id;					
 				}
 				else{
-					//echo $this->PointsTrackerRepository->isGameComplete($game_id);
+					
 					
 	        		//Make sure you can only add score if game is not complete
 	        		if(!$this->PointsTrackerRepository->isGameComplete($game_id)){
@@ -53,11 +53,13 @@ class PointsTrackerAPIModule extends APIModule {
 	        			
 		        		if( $score_result !== false ){
 		        			$success = true;
-		        			
+
 		        			//Check if adding score caused game to complete
 		        			if($this->PointsTrackerRepository->isGameComplete($game_id)){
 		        				$isComplete = true;
-		        				$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE");
+		        				if( !$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE")){
+		        					$message = "update status failed";
+		        				}
 		        			}
 		        		}
 		        		else{
@@ -79,14 +81,18 @@ class PointsTrackerAPIModule extends APIModule {
         	
         	case "removeScore":
         		$success = false;
+        		$message = "none";
         		$score_id = $this->getArg('score_id', null);
         		
         		if(!is_null($score_id)){
         			$this->PointsTrackerRepository->deleteScore($score_id);
         			$success = true;
         		}
+        		else{
+        			$message = "score_id not given";
+        		}
         	
-        		$response = array( 'success' =>  $success);     	
+        		$response = array( 'success' =>  $success, 'message' => $message);     	
             	$this->setResponse($response);
             	$this->setResponseVersion(1);
             	break;

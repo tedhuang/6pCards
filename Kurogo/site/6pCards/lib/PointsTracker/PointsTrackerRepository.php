@@ -39,42 +39,36 @@ class PointsTrackerRepository extends Repository{
 
 	public function updateGame($game_id, $status, $tag = "", $isOverpoints = 0){
 		$conn = self::connection();
-		$sql = "UPDATE games SET status=?, tag=? isOverpoints=? WHERE game_id=?";
-		$conn->query($sql, array($status, $tag, $isOverpoints, $game_id));
+		$sql = "UPDATE games SET status=?, tag=?, isOverpoints=? WHERE game_id=?";
+		$conn->query($sql, array($status, $tag, $isOverpoints, $game_id) );
 		
 		return true;
 	}
 	
-	public function isGameComplete($game_id){
+	public function isGameComplete($game_id){		
 		$conn = self::connection();
-		$sql = "SELECT SUM(score_red_team) AS score_red, SUM(score_blue_team) AS score_blue FROM game_score WHERE game_id=?";
-		$results = $conn->query($sql, array($game_id));
-		$row = $results->fetch();
 		
-		return false;
+		$current_score = $this->getLastestScore($game_id);
 		
-//		if(empty($row)){
-//			return false;
-//		}
-//		else{
-//			$score_red = $row['score_red'];
-//			$score_blue = $row['score_blue'];
-//			
-//			$sql = "SELECT points_to_win FROM games";
-//			$result = $conn->query($sql);
-//			$row = $results->fetch();
-//		
-//			$points_to_win = $row['points_to_win'];
-//
-//			//TODO: implement checks for overpoints feature
-//			
-//			if($score_red >= $points_to_win || $score_blue >= $points_to_win){
-//				return true;
-//			}
-//			else{
-//				return false;
-//			}
-//		}
+		$score_red = $current_score['RED'];
+		$score_blue = $current_score['BLUE'];
+		
+		$sql = "SELECT points_to_win FROM games";
+		$result = $conn->query($sql);
+		$row = $result->fetch();
+		$points_to_win = $row['points_to_win'];
+
+//		$points_to_win = 50;
+
+
+		//TODO: implement checks for overpoints feature
+		
+		if($score_red >= $points_to_win || $score_blue >= $points_to_win){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	public function getActiveGames(){
@@ -180,10 +174,10 @@ class PointsTrackerRepository extends Repository{
 		return array('RED' => $row['t_red'], 'BLUE' => $row['t_blue']);	
 	}
 	
-	public function deleteScore($game_id){
+	public function deleteScore($score_id){
 		$conn = self::connection();
 		$sql = "DELETE FROM game_score WHERE score_id=?";
-		$conn->query($sql, array($game_id));
+		$conn->query($sql, array($score_id));
 		return true;
 	}
 	
@@ -201,9 +195,8 @@ class PointsTrackerRepository extends Repository{
 				
 				//TODO: insert individual player scores here
 				
-				//TODO: sum all scores for the game for red and blue
-				
 				return array('score_id' => $lastInsert, 'scores' => $this->getLastestScore($game_id));
+//				return array('score_id' => $lastInsert, 'scores' => $result);
 			}
 			else{
 				return false;

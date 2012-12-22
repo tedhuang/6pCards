@@ -20,7 +20,7 @@
 			<td class="round_num">{$score.count}</td>
 			<td>{$score.score_red_team}</td>
 			<td>{$score.score_blue_team}</td>
-			<td><img class="delete_score" src="./common/images/critical.png" /></td>
+			<td><img class="delete_score" src="./common/images/critical.png" title="{$score.score_id}"/></td>
 		</tr>
 		{/foreach}
 	</table>

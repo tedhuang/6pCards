@@ -20,3 +20,45 @@
 .hidden{
 	display:hidden;
 }
+
+
+#dashboard{
+	text-align: center;
+}
+
+#dashboard h1 {
+	padding: 30px 10px 10px 10px;
+}
+
+#dashboard-item-list{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 100%;
+}
+
+.dashboard-item{
+	width: 49%;	
+}
+
+.dashboard-item, .dashboard-featured{
+	padding: 10px;
+	margin: 0;
+	display: inline-block;
+	text-align: center;
+}
+
+.dashboard-featured img{
+	width: 120px;
+	display: block;	
+	margin: 0 auto;
+	margin-bottom: 5px;
+	
+}
+
+.dashboard-item img{
+	display: block;	
+	margin: 0 auto;
+	margin-bottom: 5px;
+	width: 80px;
+}

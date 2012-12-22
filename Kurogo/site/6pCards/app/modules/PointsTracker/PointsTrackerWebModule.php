@@ -16,6 +16,7 @@ class PointsTrackerWebModule extends WebModule
 		//$this->addJQuery();
 		$session = $this->getSession();
 		
+		
 		/* Load Javascript CSS Libraries */
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js');
@@ -30,21 +31,24 @@ class PointsTrackerWebModule extends WebModule
 		
 		switch ($this->page) {
 			case 'index':
+				$game_list = array('title' => 'Recent Games', 'url' => 'pageGameList', 'image' => '');
+				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => '');
+				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => '');
 				
-				//$curr_game_id = $this->PointsTrackerRepository->createGame();
-				//$_SESSION['game_id'] = $curr_game_id;
-				
-				//$this->PointsTrackerRepository->createPlayer('Ted');
-				//$this->PointsTrackerRepository->setScore(1, "RED", "Ted");
-				
-				$activeGames = $this->PointsTrackerRepository->getActiveGames();
-				$players = $this->PointsTrackerRepository->getAllPlayers();
-				
-				$this->assign("activeGames", $activeGames);
-				$this->assign("players", $players);
+				$dashboardItems = array($game_list, $create_game, $stats);					
+				$this->assign('dashboardItems', $dashboardItems);
 				break;
 			
-			
+			case 'pageGameList':
+				$activeGames = $this->PointsTrackerRepository->getActiveGames();
+				$this->assign("activeGames", $activeGames);
+				break;
+				
+			case 'pageCreateGame':
+				$players = $this->PointsTrackerRepository->getAllPlayers();
+				$this->assign("players", $players);
+				break;
+				
 			case 'pageGame':
 				$game_id = $this->getArg("game_id");
 				$game =  $this->PointsTrackerRepository->getGameById($game_id);
@@ -69,12 +73,13 @@ class PointsTrackerWebModule extends WebModule
 				break;		
 			
 			case 'pageScoreboard':
-			
+				
 				break;
 			
 			case 'pageStats':
 			
 				break;
+			
 			
 			case 'pageError':
 				$this->assign("message", $this->getArg("message", "No message given."));
