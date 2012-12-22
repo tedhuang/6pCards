@@ -1,6 +1,7 @@
 
 #dashboard{
 	text-align: center;
+	box-sizing:border-box;
 }
 
 #dashboard h1 {
@@ -9,7 +10,7 @@
 }
 
 #dashboard-item-list{
-	
+	box-sizing:border-box;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -20,6 +21,7 @@
 
 .dashboard-item{
 	width: 49%;	
+	box-sizing:border-box;
 }
 
 .dashboard-item, .dashboard-featured{

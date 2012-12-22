@@ -31,11 +31,13 @@ class PointsTrackerWebModule extends WebModule
 		
 		switch ($this->page) {
 			case 'index':
-				$game_list = array('title' => 'Recent Games', 'url' => 'pageGameList', 'image' => '');
-				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => '');
-				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => '');
+				$game_list = array('title' => 'Recent Games', 'url' => 'pageGameList', 'image' => 'module/PointsTracker/images/pageGameList.png');
+				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => 'module/PointsTracker/images/pageCreateGame.png');
+				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => 'module/PointsTracker/images/pageStats.png');
+				$placeholder = array('title' => 'Something Else', 'url' => '.', 'image' => 'module/PointsTracker/images/placeholder.png');
 				
-				$dashboardItems = array($game_list, $create_game, $stats);					
+				
+				$dashboardItems = array($game_list, $create_game, $stats, $placeholder);					
 				$this->assign('dashboardItems', $dashboardItems);
 				break;
 			

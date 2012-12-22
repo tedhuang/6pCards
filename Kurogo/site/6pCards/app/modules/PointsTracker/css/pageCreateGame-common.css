@@ -1,4 +1,7 @@
 
+h3{
+	margin: 10px 0 10px 0;
+}
 
 .new-game-container{
 	padding: 0 10px 0 10px;
@@ -9,7 +12,6 @@
 }
 
 .players-container{
-	padding: 5px;
 }
 
 .player-container{
@@ -103,4 +105,13 @@
 
 .team-controls{
 	display:none;
+	border-radius: 10px;
+	font-size: 0.65em;
+	font-weight:bold;
+	color: #fff;
+	background: rgba(0,0,0,0.5);
+	padding: 10px;
 }
+
+
+

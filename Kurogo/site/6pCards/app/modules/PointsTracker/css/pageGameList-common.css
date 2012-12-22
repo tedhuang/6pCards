@@ -1,0 +1,15 @@
+
+
+.active-game{
+	positon: relative;
+}
+
+.active-game .timestamp{
+	font-size: 0.65em;
+	color: #666;
+	float:right;
+}
+
+.active-game .vs-container{
+	font-size: 0.7em;
+}

@@ -1,12 +1,13 @@
 /* This CSS file contains most of the core theme CSS you'll need to customize your site's overall color scheme and fonts. */
 
 
-/* Overall colors and fonts */
-
 body {
 	/* Site-wide page background color, and base font family, size and line spacing */
-	background-color: @@@body_background_color@@@;
-	background-image: @@@body_background_image@@@;
+	//background-color: @@@body_background_color@@@;
+	//background-image: @@@body_background_image@@@;
+	
+	 background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat;
+	
 	font: @@@base_font_size@@@/1.33em @@@primary_font_family@@@;
 }
 

@@ -52,10 +52,12 @@
 	<div class="score-control">
 		<button class="score-submit">Submit</button>
 	</div>
+	
+	<button class="goIndex">Go Home</button>
 </div>
 
 
-<button class="goIndex">Go Home</button>
+
 
 
 {*include file="findInclude:common/templates/footer.tpl"*}

@@ -67,9 +67,7 @@ function startTeamSelection(){
 	})
 	
 	$(".team-selection-container").show();
-	
-	
-	
+	$(".message").html("Select Team");
 	
 	$(".team-selection-randomize").click(function(){
 		clearPlayers();
