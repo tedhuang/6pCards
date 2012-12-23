@@ -120,7 +120,7 @@ function sendScore(placement_array){
 	makeAPICall('POST', "PointsTracker" , 'sendScore', params, function(response){
 		if(response.success){
 			
-			console.log(response);
+			//console.log(response);
 			var new_score = "<tr><td class='round_num'>"+($(".round_num").length+1)+"</td>" +
 								"<td>"+response.score_result.scores.RED+"</td>" +
 								"<td>"+response.score_result.scores.BLUE+"</td>" +

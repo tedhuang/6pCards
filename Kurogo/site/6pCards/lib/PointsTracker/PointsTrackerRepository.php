@@ -73,7 +73,7 @@ class PointsTrackerRepository extends Repository{
 	
 	public function getActiveGames(){
 		$conn = self::connection();
-		$sql = "SELECT * FROM games WHERE status='STARTED'";
+		$sql = "SELECT * FROM games WHERE status='STARTED' ORDER BY timestamp DESC";
 		$result = $conn->query($sql);
 		return $result->fetchAll();
 	}
@@ -241,8 +241,10 @@ class PointsTrackerRepository extends Repository{
 		//Must be 1st, 2nd or 1st, 5th and not be last
 		function isFiveTwo($p_data, $team_color){
 			if( $p_data[0]['team_color'] == $team_color  && 
-				( $p_data[1]['team_color'] == $team_color ||  
-					($p_data[4]['team_color'] == $team_color && $p_data[5]['team_color'] != $team_color)
+				(
+					($p_data[1]['team_color'] == $team_color && $p_data[5]['team_color'] == $team_color ) ||  
+					($p_data[4]['team_color'] == $team_color && $p_data[5]['team_color'] != $team_color) ||
+					($p_data[3]['team_color'] == $team_color && $p_data[4]['team_color'] != $team_color)
 				)
 			){
 				return true;
@@ -256,8 +258,10 @@ class PointsTrackerRepository extends Repository{
 		function isFourThree($p_data, $team_color){
 			if( $p_data[0]['team_color'] != $team_color &&
 			    $p_data[1]['team_color'] == $team_color && 
-			    ( $p_data[4]['team_color'] == $team_color ||
-			      $p_data[2]['team_color'] == $team_color && $p_data[3]['team_color'] == $team_color )
+			    ( 
+				    ($p_data[4]['team_color'] == $team_color && $p_data[5]['team_color'] != $team_color) || 
+				    ($p_data[2]['team_color'] == $team_color && $p_data[3]['team_color'] == $team_color )
+			    )
 			){
 				return true;
 			}
