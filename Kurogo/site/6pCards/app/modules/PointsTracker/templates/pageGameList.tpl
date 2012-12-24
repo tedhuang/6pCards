@@ -5,7 +5,7 @@
 
 	<h3>Active Games</h3>
 	{if $activeGames|count == 0}
-		<h3>No active games</h3>
+		<div class="response-message">No active games</div>
 	{else}
 		<ul class="nav active-games-list">
 		{foreach from=$activeGames item=game}
