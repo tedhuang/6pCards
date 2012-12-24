@@ -1,0 +1,21 @@
+
+#score_graph{
+	width: 100%;
+	height: 400px;
+}
+
+.game-stats{
+	margin: 10px;
+}
+
+.stats{
+	font-size: 0.8em;
+	font-weight:bold;
+	margin-bottom: 5px;
+	color: #666;
+}
+
+.stats:last-child{
+	margin-top: 10px;
+	font-size: 1em;
+}

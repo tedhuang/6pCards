@@ -1,6 +1,11 @@
 
-h3{
+h3.message{
 	margin: 10px 0 10px 0;
+	width: 100%;
+	box-sizing:border-box;
+	text-align:center;
+	//text-transform: uppercase;
+	font-size: 0.9em;
 }
 
 .new-game-container{
@@ -8,7 +13,6 @@ h3{
 }
 
 .players-selection-container{
-
 }
 
 .players-container{
@@ -61,6 +65,7 @@ h3{
 
 
 .players-controls{
+	margin-top: 10px;
 	display:none;
 }
 
@@ -69,14 +74,23 @@ h3{
 	display:none;
 }
 
+.team-selection-hint{
+	width: 100%;
+	font-size: 0.7em;
+	text-align:center;
+}
+
+.team-selection-control{
+	margin: 10px 0 10px 0;
+}
+
 .team-container{
 	box-sizing:border-box;
-	height: 250px;
-	border: 2px solid #999;
-	border-radius: 5px;
-	padding:1px;
+	height: 320px;
+	//border: 2px solid #999;
+	//border-radius: 5px;
+	//padding:1px;
 	margin: 10px 0 10px 0;
-	
 }
 
 .team-container .player-num-red,
@@ -85,32 +99,35 @@ h3{
 	font-weight:bold;
 	text-align:center;
 	width: 100%;
+	border-bottom: 1px solid #ccc;
 }
 
+.team-container-red,
+.team-container-blue{
+	height: 95%;
+	width: 48%;
+	border-right: 1px solid #ccc;
+	padding: 10px 10px 0 0;
+	box-sizing:border-box;
+}
 .team-container-red{
 	float:left;
-	height: 100%;
-	width: 48%;
-	border-right: 2px solid #ccc;
 	color: #f00;
 }
 
 .team-container-blue{
 	float:right;
-	height: 100%;
-	width: 48%;
-	border-left: 2px solid #ccc;
-	color:#00f
+	color: #00f;
 }
 
 .team-controls{
 	display:none;
-	border-radius: 10px;
-	font-size: 0.65em;
+	font-size: 0.70em;
 	font-weight:bold;
 	color: #fff;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,0.4);
 	padding: 10px;
+	margin: 10px 0 10px 0;
 }
 
 

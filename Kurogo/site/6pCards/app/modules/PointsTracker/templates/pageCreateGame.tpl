@@ -3,7 +3,7 @@
 <div class="new-game-container">
 	<h3 class="message">Select Players</h3>
 	
-	<div class="game-details-container">
+	<div class="game-details-container content-container">
 	
 		<div class="players-selection-container">
 		
@@ -17,24 +17,27 @@
 			{foreachelse}
 				No players loaded.
 			{/foreach}
-				<div class="clear"></div>
 			</div>
 		</div>
-			
-		<div class="players-controls clear">
-			<button class="players-submit">Done</button>
-			<button class="players-reset">Reset</button>
+		<div class="clear"></div>
+		
+		<div class="players-controls">
+			<button class="players-submit leftButton">Done</button>
+			<button class="players-reset rightButton">Reset</button>
+			<div class="clear"></div>
 		</div>
 	</div>
 			
 	<div class="team-selection-container">
-	
+		
 		<div class="team-selection-control">
-			<button class="team-reset">Reset</button>
-			<button class="team-selection-randomize">Randomize</button>
+			<button class="team-reset leftButton">Reset</button>
+			<button class="team-selection-randomize rightButton">Randomize</button>
+			<div class="clear"></div>
 		</div>
 		
-		<div class="team-container">
+		<div class="team-container content-container">
+			<h3 class="team-selection-hint">Drag the user icons to each side</h3>
 			<div class="team-container-red">
 				<div class="player-num-red"><span>0</span>/3 players</div>
 			</div>
@@ -46,7 +49,10 @@
 		
 		<div class="team-controls">
 			<div class="team-summary"></div>
-			<button class="team-submit">Submit</button>
+			
+			<div class="clear"></div>
 		</div>
+		
+		<button class="team-submit fullButton">Submit</button>
 	</div>
 </div>

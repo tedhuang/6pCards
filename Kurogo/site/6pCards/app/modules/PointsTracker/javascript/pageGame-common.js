@@ -61,13 +61,37 @@ $(document).ready(function(){
 	});
 	
 	$(".score-submit").click(function(){
-		sendScore(placement_array);
+		if(isPlacementComplete()){
+			$(this).html("<div class='loadImg'><img src='./common/images/loader.gif' width=30 /></div>");
+			sendScore(placement_array);
+		}
+		else{
+			//Blinking effect
+			$(".score-control-message").css('color', "#f00");
+			setTimeout(function(){$(".score-control-message").css('color', "#000")}, 200)
+			setTimeout(function(){$(".score-control-message").css('color', "#f00")}, 400)
+			setTimeout(function(){$(".score-control-message").css('color', "#000")}, 600)
+			setTimeout(function(){$(".score-control-message").css('color', "#f00")}, 800)
+			setTimeout(function(){$(".score-control-message").css('color', "#000")}, 1000)
+		}		
 	});
 	
-	$(".delete_score").click(function(){
+	$(".delete_score").live('click',function(){
+		$(this).parents("tr").fadeOut(3000);
 		deleteScore($(this).attr('title'));
 	});
 });
+
+function isPlacementComplete(){
+	var i;
+	for(i=0; i<6; i++){
+		if( placement_array[i] == null ){
+			return false;
+		}
+	}
+	
+	return true;
+}
 
 //Gets the number for the smallest placement that haven't been used yet
 // returns false if no more placement available
@@ -124,8 +148,9 @@ function sendScore(placement_array){
 			var new_score = "<tr><td class='round_num'>"+($(".round_num").length+1)+"</td>" +
 								"<td>"+response.score_result.scores.RED+"</td>" +
 								"<td>"+response.score_result.scores.BLUE+"</td>" +
-								"<td><img class='delete_score' src='./common/images/critical.png' title='"+response.score_result.score_id+"' /></td></tr>";
-			$(".score-table").append(new_score);
+								"<td><img class='delete_score' src='./common/images/remove.png' title='"+response.score_result.score_id+"' /></td></tr>";
+			$(".score-table").append(new_score).show();
+			$(".score-submit").html("Submit");
 			
 			if(response.isComplete){
 				//Game is complete, redirect to scoreboard

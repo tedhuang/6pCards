@@ -1,10 +1,44 @@
 
-
-.separator{
-	height: 20px;
+.game-details-container{
+	background: rgba(255,255,255,0.3);
+	padding: 10px;
+	margin: 10px;
+	border: 2px solid #C4B9A2;
+	position: relative;
+	height: 40px
 }
 
+.game-title{
+	font-weight:bold;
+	color: #666;
+}
 
+.status{
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 5px;
+	border-bottom-left-radius: 10px;
+	background: #C4B9A2;
+	font-weight: bold;
+	font-size: 0.8em;
+	color: #fff;
+}
+
+.pts_win{
+	font-size: 0.8em;
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+
+.timestamp{
+	font-size: 0.65em;
+	color: #666;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
 
 .score-container{
 	padding: 0 10px 0 10px;
@@ -14,19 +48,19 @@
 .score-table{
 	width: 100%;
 	height: 100%;
-	border: 2px solid #ccc;
+	border: 2px solid #C4B9A2;
 	text-align:center;
-	background: #fff;
+	background: rgba(255,255,255,0.3);
 }
 
 .score-table th{
-	font-size: 0.65em;
+	font-size: 0.7em;
 	font-weight:bold;
-	border-bottom: 2px solid #666;
+	text-align:center;
 }
 
 .score-table td{
-	font-size: 0.8em;
+	font-size: 0.9em;
 	font-weight:bold;
 }
 
@@ -34,14 +68,27 @@
 	width: 15px;
 	height: 15p;
 	cursor:pointer;
+	opacity: 0.5;
+}
+
+.score-table td img.delete_score:hover,
+.score-table td img.delete_score:active{
+	opacity: 0.9;
 }
 
 .score-table td.round_num{
 	color: #666;
-	font-weight:normal
-	
+	font-weight:normal;
+	text-align: right;
+	width: 10px;
 }
 
+.score-control{
+	margin-bottom: 10px;
+	padding: 10px;
+	border: 2px solid #C4B9A2;
+	background: rgba(255,255,255,0.3);
+}
 
 .score-control-message{
 	width: 100%;
@@ -101,9 +148,7 @@
 	display:none;
 }
 
-.score-control{
-	margin-top: 10px;
-}
+
 
 
 

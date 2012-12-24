@@ -57,7 +57,8 @@ class PointsTrackerAPIModule extends APIModule {
 		        			//Check if adding score caused game to complete
 		        			if($this->PointsTrackerRepository->isGameComplete($game_id)){
 		        				$isComplete = true;
-		        				if( !$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE")){
+		        				
+		        				if( !$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE", date("Y-m-d H:i:s"))){
 		        					$message = "update status failed";
 		        				}
 		        			}

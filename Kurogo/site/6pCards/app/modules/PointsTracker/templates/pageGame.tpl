@@ -1,17 +1,19 @@
 {include file="findInclude:common/templates/header.tpl"  scalable=0}
 
-<div class="game-details-container focal">
-	<div>GAME ID: {$game.game_id}</div>
-	<div>Status: {$game.status}</div>
-	<div>Points to win: {$game.points_to_win}</div>
-	<div>Time started: {$game.timestamp}</div>
-	<!--<div>Tags: {$game.tag}</div> -->
+<div class="game-details-container">
+	<div>
+		<div class="game-title">Game {$game.game_id}</div>
+		<div class="status">{$game.status}</div>
+		<div class="pts_win">{$game.points_to_win} points to win</div>
+		<div class="timestamp">Started on {date( 'Y-m-d h:iA',strtotime($game.timestamp))}</div>
+	</div>
+	<div class="clear"></div>
 </div>
-<hr />
-<div class="score-container">
-	<table class="score-table">
+
+<div class="score-container" >
+	<table class="score-table" {if $score_record|count == 0}style="display:none;"{/if}>
 		<tr class="heading-row">
-			<th>Round</th>
+			<th>#</th>
 			<th>{foreach from=$game.t_red item=player}{$player.player_name} {/foreach}</th>
 			<th>{foreach from=$game.t_blue item=player}{$player.player_name} {/foreach}</th>
 		</tr>
@@ -20,16 +22,14 @@
 			<td class="round_num">{$score.count}</td>
 			<td>{$score.score_red_team}</td>
 			<td>{$score.score_blue_team}</td>
-			<td><img class="delete_score" src="./common/images/critical.png" title="{$score.score_id}"/></td>
+			<td><img class="delete_score" src="./common/images/remove.png" title="{$score.score_id}"/></td>
 		</tr>
 		{/foreach}
 	</table>
-	
-	<hr />
-	
+
 	<div class="score-control">
 	
-		<div class="score-control-message"></div>
+		<div class="score-control-message">Select 1st place</div>
 		
 		<div class="players-container">
 		{foreach from=$game.t_red item=player}
@@ -47,13 +47,22 @@
 			</div>
 		{/foreach}
 		</div>
+		<div class="clear"></div>
 	</div>
-	<div class="clear"></div>
-	<div class="score-control">
-		<button class="score-submit">Submit</button>
+
+	<div class="end-btns">
+		<!-- <button class="goIndex leftButton">Go Home</button> -->
+		{if $game.status=="COMPLETE"}
+			<button class="fullButton" onclick="window.location='./pageScoreboard?game_id={$game.game_id}'">View Summary</button>
+		{else}
+			<button class="score-submit fullButton">Submit Score</button>
+		{/if}
+		
 	</div>
 	
-	<button class="goIndex">Go Home</button>
+	
+	
+	
 </div>
 
 

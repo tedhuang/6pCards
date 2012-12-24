@@ -1,1 +1,16 @@
 
+* {
+ font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.content-container{
+	padding: 10px;
+	border: 2px solid #C4B9A2;
+	background: rgba(255,255,255,0.3);
+}
+
+.loadImg{
+	width: 100%;
+	height: 100%;
+	text-align:center;
+}

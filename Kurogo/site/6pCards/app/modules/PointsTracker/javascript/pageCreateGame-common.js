@@ -45,9 +45,6 @@ $(document).ready(function(){
 			}
 		}
 	});	
-	
-	
-
 
 });
 
@@ -103,6 +100,7 @@ function startTeamSelection(){
 	});
 	
 	$(".team-submit").click(function(){
+		$(this).html("<div class='loadImg'><img src='./common/images/loader.gif' width=30 /></div>");
 		startGame();
 	});	
 	
@@ -289,6 +287,10 @@ function revertDraggable($selector) {
 }
 
 
+function isPlayerSelectionComplete(){
+	
+}
+
 function startGame(){
 	if(team_red.length != MAX_PLAYERS_PER_TEAM ||  team_blue.length != MAX_PLAYERS_PER_TEAM){
 		alert("Player numbers incorrect");
@@ -300,7 +302,7 @@ function startGame(){
 		 
 		makeAPICall('POST', "PointsTracker" , 'createGame', params, function(response){
 			if(response.success){
-				alert("success");
+				$(this).html("Submit")
 				window.location = "./pageGame?game_id=" + response.game_id;
 			}
 			else{

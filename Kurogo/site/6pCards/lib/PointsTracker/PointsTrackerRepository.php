@@ -37,10 +37,10 @@ class PointsTrackerRepository extends Repository{
 	}
 	
 
-	public function updateGame($game_id, $status, $tag = "", $isOverpoints = 0){
+	public function updateGame($game_id, $status, $complete_time, $tag = "", $isOverpoints = 0){
 		$conn = self::connection();
-		$sql = "UPDATE games SET status=?, tag=?, isOverpoints=? WHERE game_id=?";
-		$conn->query($sql, array($status, $tag, $isOverpoints, $game_id) );
+		$sql = "UPDATE games SET status=?, complete_time=?, tag=?, isOverpoints=? WHERE game_id=?";
+		$conn->query($sql, array($status, $complete_time, $tag, $isOverpoints, $game_id) );
 		
 		return true;
 	}
@@ -73,7 +73,28 @@ class PointsTrackerRepository extends Repository{
 	
 	public function getActiveGames(){
 		$conn = self::connection();
-		$sql = "SELECT * FROM games WHERE status='STARTED' ORDER BY timestamp DESC";
+		$sql = "SELECT *, 
+				(SELECT SUM(score_red_team) AS score_red 
+				    FROM game_score WHERE game_id=games.game_id
+				) AS score_red,
+				(SELECT SUM(score_blue_team) AS score_blue 
+				    FROM game_score WHERE game_id=games.game_id
+				) AS score_blue 
+				FROM games WHERE status='STARTED' ORDER BY timestamp DESC";
+		$result = $conn->query($sql);
+		return $result->fetchAll();
+	}
+	
+	public function getInactiveGames(){
+		$conn = self::connection();
+		$sql = "SELECT *, 
+				( SELECT SUM(score_red_team) AS score_red 
+				    FROM game_score WHERE game_id=games.game_id
+				) AS score_red,
+				(SELECT SUM(score_blue_team) AS score_blue 
+				    FROM game_score WHERE game_id=games.game_id
+				) AS score_blue  
+				FROM games WHERE status='COMPLETE' ORDER BY timestamp DESC";
 		$result = $conn->query($sql);
 		return $result->fetchAll();
 	}
@@ -128,17 +149,12 @@ class PointsTrackerRepository extends Repository{
 	}
 	
 	
-	public function getScoreboard(){
-		$conn = self::connection();
-		
-	}
-	
 	public function getStats(){
 		$conn = self::connection();
 		
 	}
 	
-	public function getScoreByGame($game_id, $isSummed){
+	public function getScoreByGame($game_id, $isSummed=true){
 		$conn = self::connection();
 		$sql = "SELECT * FROM game_score WHERE game_id=? ORDER BY timestamp ASC";
 		$result = $conn->query($sql, array($game_id));

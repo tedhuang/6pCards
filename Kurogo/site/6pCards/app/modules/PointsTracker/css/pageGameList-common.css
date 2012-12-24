@@ -1,15 +1,45 @@
 
+.nav{
 
-.active-game{
+}
+
+.game{
 	positon: relative;
 }
 
-.active-game .timestamp{
+.game .timestamp{
 	font-size: 0.65em;
 	color: #666;
-	float:right;
+	//float:right;
 }
 
-.active-game .vs-container{
+.vs-container{
 	font-size: 0.7em;
+	text-align:center;
+}
+
+.vs-container td{
+	width: 33%;
+	box-sizing:border-box;
+}
+
+
+.game .score{
+	font-size: 2em;
+	font-weight:bold;
+	text-align: center;
+}
+
+.game .score.WINNER{
+	color: #FBB117;
+}
+
+h3{
+	padding: 0 10px 0 10px;
+}
+
+.response-message{
+	font-style: italic;
+	text-align:center;
+	padding: 0 10px 0 10px;
 }
