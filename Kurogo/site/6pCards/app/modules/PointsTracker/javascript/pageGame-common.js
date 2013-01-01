@@ -139,7 +139,7 @@ function sendScore(placement_array){
 	
 	 var params = {"placement" :  JSON.stringify(placement_array), "game_id" : getUrlVars()['game_id']};
 	 
-	// console.log(placement_array);
+	//console.log(placement_array);
 	 
 	makeAPICall('POST', "PointsTracker" , 'sendScore', params, function(response){
 		if(response.success){

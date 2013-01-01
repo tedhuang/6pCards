@@ -258,9 +258,11 @@ class PointsTrackerRepository extends Repository{
 		function isFiveTwo($p_data, $team_color){
 			if( $p_data[0]['team_color'] == $team_color  && 
 				(
-					($p_data[1]['team_color'] == $team_color && $p_data[5]['team_color'] == $team_color ) ||  
-					($p_data[4]['team_color'] == $team_color && $p_data[5]['team_color'] != $team_color) ||
-					($p_data[3]['team_color'] == $team_color && $p_data[4]['team_color'] != $team_color)
+					($p_data[1]['team_color'] == $team_color && $p_data[5]['team_color'] == $team_color ) ||  //2nd, 6th
+					($p_data[2]['team_color'] == $team_color && $p_data[3]['team_color'] == $team_color) ||	  //3rd, 4th
+					($p_data[2]['team_color'] == $team_color && $p_data[4]['team_color'] == $team_color) ||   //3rd, 5th
+					($p_data[3]['team_color'] == $team_color && $p_data[4]['team_color'] == $team_color)      //4th, 5th
+					
 				)
 			){
 				return true;
