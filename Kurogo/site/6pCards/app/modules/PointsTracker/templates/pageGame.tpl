@@ -34,14 +34,14 @@
 		<div class="players-container">
 		{foreach from=$game.t_red item=player}
 			<div class="player-container T_RED" title="{$player.player_name}">
-				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=40&d=mm"/>
+				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?{if $isTablet}s=100{else}s=40{/if}&d=mm"/>
 				<span>{$player.player_name}</span>
 				<div class="placement">1</div>
 			</div>
 		{/foreach}
 		{foreach from=$game.t_blue item=player}
 			<div class="player-container T_BLUE" title="{$player.player_name}">
-				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=40&d=mm"/>
+				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?{if $isTablet}s=100{else}s=40{/if}&d=mm"/>
 				<span>{$player.player_name}</span>
 				<div class="placement">6</div>
 			</div>

@@ -1,0 +1,19 @@
+.player-container{
+	width: 100px !important;
+	height: 100px !important;
+}
+
+.player-container .placement{
+	width: 100px !important;
+	height: 100px !important;
+	font-size: 4em;
+}
+
+
+.score-table th{
+	font-size: 1.5 em;
+}
+
+.score-table td{
+	font-size: 1.2em;
+}

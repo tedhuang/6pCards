@@ -148,12 +148,6 @@ class PointsTrackerRepository extends Repository{
 		}
 	}
 	
-	
-	public function getStats(){
-		$conn = self::connection();
-		
-	}
-	
 	public function getScoreByGame($game_id, $isSummed=true){
 		$conn = self::connection();
 		$sql = "SELECT * FROM game_score WHERE game_id=? ORDER BY timestamp ASC";
@@ -325,6 +319,21 @@ class PointsTrackerRepository extends Repository{
 		}
 		
 		return array('RED' => $red_score, 'BLUE' => $blue_score);
+		
+	}
+	
+	
+	
+	
+////////////////////////////////////////////////
+/***********************************************
+ * STATISTICS CALCULATION SECTION
+ ***********************************************/
+/////////////////////////////////////////////////
+
+
+	public function getStats(){
+		$conn = self::connection();
 		
 	}
 	

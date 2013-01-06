@@ -72,6 +72,9 @@ class PointsTrackerWebModule extends WebModule
 					$game['t_blue'][$name] = $player;
 				}
 				
+				
+				$deviceClassifier = Kurogo::deviceClassifier();
+		        $this->assign("isTablet", $deviceClassifier->isTablet());
 				$this->assign("score_record", $score_record);
 				$this->assign("game", $game);
 				break;		

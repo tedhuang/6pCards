@@ -48,15 +48,19 @@
 		<div class="response-message">No completed games</div>
 	{else}
 		<ul class="nav inactive-games-list">
-		{foreach from=$inactiveGames item=game}
+		{foreach from=$inactiveGames item=game name=foo}
+			{if $lastTimestamp != date('Y-m-d',strtotime($game.timestamp)) && $smarty.foreach.foo.index != 0}
+			</ul>
+			<ul class="nav inactive-games-list">
+			{/if}
 			<li class="game">
 				<a href="./pageGame?game_id={$game.game_id}">
 
 					<table class="vs-container">
 						<tr>
-							<td><div class="score {if $game.score_red > $game.score.blue}WINNER{/if}">{$game.score_red}</div></td>
+							<td><div class="score {if $game.score_red > $game.score_blue}WINNER{/if}">{$game.score_red}</div></td>
 							<td></td>
-							<td><div class="score {if $game.score_red < $game.score.blue}WINNER{/if}">{$game.score_blue}</div></td>
+							<td><div class="score {if $game.score_red < $game.score_blue}WINNER{/if}">{$game.score_blue}</div></td>
 						</tr>
 						<tr>
 							<td>
@@ -77,6 +81,7 @@
 					<div class="clear"></div>
 				</a>
 			</li>
+			{$lastTimestamp = date( 'Y-m-d',strtotime($game.timestamp))}
 		{/foreach}
 		</ul>
 	{/if}
