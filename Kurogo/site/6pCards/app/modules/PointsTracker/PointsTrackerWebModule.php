@@ -109,7 +109,27 @@ class PointsTrackerWebModule extends WebModule
 				break;
 			
 			case 'pageLeaderboard':
+				$data = $this->PointsTrackerRepository->getAllPlayersWithStats();
+				
+				$win_ratio = array();
+				foreach($data['player_stats'] as $player_name => &$stats){
+					$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+
+					$stats['gravatar_email'] = $player['gravatar_email'];
+					$stats['win_ratio'] = $stats['games_won']/$stats['games_played'];
+					$win_ratio[$player_name] = $stats['games_won']/$stats['games_played'];
+				}
+				
+				//sort array by win ratio
+				array_multisort($win_ratio, SORT_DESC, $data['player_stats']);
+				
+				
+				$this->assign('player_stats' , $data['player_stats']);				
+				break;
 			
+			case 'pageProfile':
+				
+				
 				break;
 			
 			case 'pageError':

@@ -10,7 +10,7 @@
 			<div class="players-container droppable" title="{$player.player_name}">
 			{foreach from=$players item=player}
 				<div class="player-container" title="{$player.player_name}">
-					<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=60&d=mm"/>
+					<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=120&d=mm" width=60/>
 					<span>{$player.player_name}</span>
 					<img class="checkbox" src="./modules/PointsTracker/images/checkbox.png"/>
 				</div>

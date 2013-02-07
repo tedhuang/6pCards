@@ -1,3 +1,15 @@
 {include file="findInclude:common/templates/header.tpl" scalable=0}
 
-Not implemented yet
+<ul class="results leaderboard">
+	{foreach $player_stats as $player_name => $stats}
+	<li>
+		<div class="score-background"></div>
+		<div class="win-ratio">
+			{round($stats.win_ratio*100)}%
+		</div>
+		<img class="display-picture" src="http://www.gravatar.com/avatar/{md5(strtolower(trim({$stats.gravatar_email})))}?s=120&d=mm" width=60/>
+		<div class="stat-text">{$player_name} won {$stats.games_won} out of {$stats.games_played} games</div>
+		<div class="clear"></div>
+	</li>
+	{/foreach}
+</ul>

@@ -36,6 +36,15 @@ class PointsTrackerRepository extends Repository{
 		}
 	}
 	
+	public function deleteGame($game_id){
+		$conn = self::connection();
+		
+		$sql = "DELETE FROM games WHERE game_id=?";
+		$conn->query($sql, array($game_id));
+		
+		return true;
+	}
+	
 
 	public function updateGame($game_id, $status, $complete_time, $tag = "", $isOverpoints = 0){
 		$conn = self::connection();
@@ -203,10 +212,12 @@ class PointsTrackerRepository extends Repository{
 			$lastInsert = $conn->lastInsertId('score_id');		
 			if($lastInsert != ""){
 				
-				//TODO: insert individual player scores here
+				//TODO: insert individual player scores here				
+//				$sql = "INSERT INTO player_score (game_id, team_color, points_earned, player_name, score_id) VALUES (?,?,?,?,?)";
+//				$conn->query($sql, array($game_id, ));
 				
+								
 				return array('score_id' => $lastInsert, 'scores' => $this->getLastestScore($game_id));
-//				return array('score_id' => $lastInsert, 'scores' => $result);
 			}
 			else{
 				return false;
@@ -216,7 +227,6 @@ class PointsTrackerRepository extends Repository{
 			return false;
 		}
 	}
-	
 	
 	
 	private function calculateScore($p_data){
@@ -256,7 +266,6 @@ class PointsTrackerRepository extends Repository{
 					($p_data[2]['team_color'] == $team_color && $p_data[3]['team_color'] == $team_color) ||	  //3rd, 4th
 					($p_data[2]['team_color'] == $team_color && $p_data[4]['team_color'] == $team_color) ||   //3rd, 5th
 					($p_data[3]['team_color'] == $team_color && $p_data[4]['team_color'] == $team_color)      //4th, 5th
-					
 				)
 			){
 				return true;
@@ -330,12 +339,63 @@ class PointsTrackerRepository extends Repository{
  * STATISTICS CALCULATION SECTION
  ***********************************************/
 /////////////////////////////////////////////////
-
-
-	public function getStats(){
+	
+	public function getAllPlayersWithStats() {
 		$conn = self::connection();
 		
+		$sql = "SELECT team_red, team_blue, complete_time, 
+					(SELECT SUM(score_red_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_red_team, 
+					(SELECT SUM(score_blue_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_blue_team 
+				FROM games AS g WHERE status='COMPLETE' ORDER BY complete_time ASC";
+		
+		$result = $conn->query($sql,array());
+		
+		$player_stats = array();
+		
+		$score_data = $result->fetchAll();
+		
+		//Calculate the number of games won and played by each player
+		foreach($score_data as $game_data){
+			if($game_data['score_red_team'] > $game_data['score_red_team']){
+				$winners = explode('|', $game_data['team_red']);
+				$losers = explode('|', $game_data['team_blue']);
+			}
+			else{
+				$winners = explode('|', $game_data['team_blue']);		
+				$losers = explode('|', $game_data['team_red']);
+			}
+			
+			foreach($winners as $player_name){
+				if(!isset($player_stats[$player_name])){
+					$player_stats[$player_name] = array(
+						'games_played' => 0,
+						'games_won' => 0
+					);
+				}
+
+				$player_stats[$player_name]['games_won']++;
+				$player_stats[$player_name]['games_played']++;
+			}
+			
+			foreach($losers as $player_name){
+				if(!isset($player_stats[$player_name])){
+					$player_stats[$player_name] = array(
+						'games_played' => 0,
+						'games_won' => 0
+					);
+				}
+				
+				$player_stats[$player_name]['games_played']++;
+			}			
+		}
+		
+		
+		return array('player_stats' => $player_stats,
+					 'score_data' => $score_data
+					);
 	}
+	
+
 	
 }
 
