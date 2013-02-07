@@ -78,7 +78,7 @@ function startTeamSelection(){
 	
 		for(i=0; i<rand_team.length; i++){
 			avatar = $(".SELECTED.player-container[title='"+rand_team[i]+"']").find('img').attr('src');			
-			player_container = '<div class="player-container"><img src="'+avatar+'"/><span>'+rand_team[i]+'</span></div>';
+			player_container = '<div class="player-container"><img src="'+avatar+'" width=60/><span>'+rand_team[i]+'</span></div>';
 			if(i < 3){
 				team_red.push(rand_team[i]);
 				$(".team-container-red").append(player_container);

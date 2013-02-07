@@ -54,6 +54,13 @@ class PointsTrackerRepository extends Repository{
 		return true;
 	}
 	
+	public function setOverPoints($game_id){
+		$conn = self::connection();
+		$sql = "UPDATE games SET isOverpoints=1 WHERE game_id=?";
+		$conn->query($sql, array($game_id));
+		return true;
+	}
+	
 	public function isGameComplete($game_id){		
 		$conn = self::connection();
 		
@@ -67,13 +74,17 @@ class PointsTrackerRepository extends Repository{
 		$row = $result->fetch();
 		$points_to_win = $row['points_to_win'];
 
-//		$points_to_win = 50;
-
-
 		//TODO: implement checks for overpoints feature
 		
 		if($score_red >= $points_to_win || $score_blue >= $points_to_win){
-			return true;
+			if(abs($score_red - $score_blue) <= 3){
+				$this->setOverPoints($game_id);
+				return false;	
+			}
+			else{
+				return true;
+			}
+			
 		}
 		else{
 			return false;
@@ -356,7 +367,7 @@ class PointsTrackerRepository extends Repository{
 		
 		//Calculate the number of games won and played by each player
 		foreach($score_data as $game_data){
-			if($game_data['score_red_team'] > $game_data['score_red_team']){
+			if($game_data['score_red_team'] > $game_data['score_blue_team']){
 				$winners = explode('|', $game_data['team_red']);
 				$losers = explode('|', $game_data['team_blue']);
 			}
@@ -386,7 +397,10 @@ class PointsTrackerRepository extends Repository{
 				}
 				
 				$player_stats[$player_name]['games_played']++;
-			}			
+			}
+			
+			
+						
 		}
 		
 		
