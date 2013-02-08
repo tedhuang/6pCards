@@ -1,6 +1,14 @@
 {include file="findInclude:common/templates/header.tpl" scalable=0}
 
+
+<div id="chart">
+  <svg></svg>
+</div>
+<div class="show-chart">Show Graph</div>
+
 <ul class="results leaderboard">
+
+
 	{foreach $player_stats as $player_name => $stats}
 	<li>
 		<div class="score-background"></div>

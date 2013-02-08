@@ -365,6 +365,18 @@ class PointsTrackerRepository extends Repository{
 		
 		$score_data = $result->fetchAll();
 		
+		$players = $this->getAllPlayers();
+		
+		foreach($players as $player){
+			$player_name = $player['player_name'];
+			$player_stats[$player_name] = array(
+				'games_played' => 0,
+				'games_won' => 0,
+				'ratio_history' => array()
+			);
+		}
+		
+		
 		//Calculate the number of games won and played by each player
 		foreach($score_data as $game_data){
 			if($game_data['score_red_team'] > $game_data['score_blue_team']){
@@ -377,30 +389,49 @@ class PointsTrackerRepository extends Repository{
 			}
 			
 			foreach($winners as $player_name){
-				if(!isset($player_stats[$player_name])){
-					$player_stats[$player_name] = array(
-						'games_played' => 0,
-						'games_won' => 0
-					);
-				}
+//				if(!isset($player_stats[$player_name])){
+//					$player_stats[$player_name] = array(
+//						'games_played' => 0,
+//						'games_won' => 0,
+//						'ratio_history' => array()
+//					);
+//				}
 
 				$player_stats[$player_name]['games_won']++;
 				$player_stats[$player_name]['games_played']++;
+				
+//				$win_ratio = $player_stats[$player_name]['games_won']/$player_stats[$player_name]['games_played'];				
+//				array_push($player_stats[$player_name]['ratio_history'], array("timestamp" => $game_data['complete_time'],
+//																				"win_ratio" => $win_ratio ));
 			}
 			
 			foreach($losers as $player_name){
-				if(!isset($player_stats[$player_name])){
-					$player_stats[$player_name] = array(
-						'games_played' => 0,
-						'games_won' => 0
-					);
-				}
-				
+//				if(!isset($player_stats[$player_name])){
+//					$player_stats[$player_name] = array(
+//						'games_played' => 0,
+//						'games_won' => 0,
+//						'ratio_history' => array()
+//					);
+//				}
 				$player_stats[$player_name]['games_played']++;
 			}
 			
-			
-						
+			foreach($players as $player){
+				
+				$player_name = $player['player_name'];
+				
+				if($player_stats[$player_name]['games_played'] == 0){
+					$win_ratio = 0;
+				}
+				else{
+					$win_ratio = $player_stats[$player_name]['games_won']/$player_stats[$player_name]['games_played'];
+				}
+				
+				array_push($player_stats[$player_name]['ratio_history'], array("timestamp" => $game_data['complete_time'],
+																				"win_ratio" => $win_ratio ));
+			}
+
+									
 		}
 		
 		

@@ -22,6 +22,8 @@ class PointsTrackerWebModule extends WebModule
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery.ui.touch-punch.min.js');
 		$this->addInternalJavascript('/common/javascript/lib/json2.js');
+		$this->addInternalJavascript('/common/javascript/lib/jquery.easing.1.3.js');
+		
 //		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/');
 //		$this->addInternalJavascript('/common/javascript/lib/d3.v2.min.js');
 //		$this->addInternalJavascript('/common/javascript/lib/swipe.js');
@@ -29,8 +31,19 @@ class PointsTrackerWebModule extends WebModule
 		
 		$this->addInternalCSS('/common/javascript/lib/jquery-ui-1.9.2.custom/css/pepper-grinder/jquery-ui-1.9.2.custom.css');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic');
+		//$this->addExternalCSS('http://fonts.googleapis.com/css?family=Josefin+Slab:400,600,700');
+		
+		$jennysIP = "75.157.140.7";
+		
+		if($_SERVER['REMOTE_ADDR'] == $jennysIP && $this->page != "piggysPage"){
+			$this->redirectTo('piggysPage');
+		}
+
 		
 		switch ($this->page) {
+			case "piggysPage":
+				
+				break;
 			case 'index':
 				$game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'image' => './modules/PointsTracker/images/pageGameList.png');
 				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => './modules/PointsTracker/images/pageCreateGame.png');
@@ -120,11 +133,30 @@ class PointsTrackerWebModule extends WebModule
 					$win_ratio[$player_name] = $stats['games_won']/$stats['games_played'];
 				}
 				
+
+				
 				//sort array by win ratio
 				array_multisort($win_ratio, SORT_DESC, $data['player_stats']);
+
+				$json_data =  $this->generateWinRatioGraphJson($data);
+
+				$this->assign('player_stats' , $data['player_stats']);	
+				$this->addInlineJavascript($json_data);
 				
-				
-				$this->assign('player_stats' , $data['player_stats']);				
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/lib/d3.v2.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/nv.d3.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/tooltip.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/utils.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/legend.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/axis.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/scatter.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/line.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/historicalBar.js');
+//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/multiBar.js');	
+//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/multiBarChart.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/linePlusBarChart.js');		
+//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/cumulativeLineChart.js');		
+				$this->addInternalCSS("/common/javascript/lib/nvd3/src/nv.d3.css");
 				break;
 			
 			case 'pageProfile':
@@ -142,6 +174,33 @@ class PointsTrackerWebModule extends WebModule
 		
 	}
 	
+	private function generateWinRatioGraphJson($data){
+		
+		$json_data = "var data=[";
+		
+		$count = count($data['player_stats']);
+		
+		foreach($data['player_stats'] as $player_name => $player_data){
+			
+			
+			$json_data .= "{'key' : '".$player_name."', 'values' : [";
+			
+//			echo json_encode($data['player_stats']['Ted']['ratio_history']);
+
+			foreach($player_data['ratio_history'] as $entry){
+				
+				$timestamp = date("U", strtotime($entry['timestamp']))*1000;
+				
+				$json_data .= "[".$timestamp.",".$entry['win_ratio']."],";
+			}
+			$json_data = trim($json_data, ",");
+			$json_data .= "]},";	
+		}
+		$json_data = trim($json_data, ",");		
+		$json_data .= "];";
+		
+		return $json_data;
+	}
 	
 	private function getRoundDuration($scores, $game_start_time){
 		$duration = 0;

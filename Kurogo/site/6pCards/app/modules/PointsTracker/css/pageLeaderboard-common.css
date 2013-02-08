@@ -1,7 +1,10 @@
-
+#navbar{
+	margin: 0;
+}
 
 .leaderboard.results{
 	background: rgba(255,255,255,0.6);
+	margin: 0;
 }
 
 .leaderboard.results li{
@@ -38,8 +41,8 @@
 }
 
 .stat-text{
-	color: #111;
-	font-size: 90%;
+	font-size: 1.2em;
+	font-weight: 300;
 	text-shadow: #fff 0.1em 0.1em 0.2em
 }
 
@@ -50,3 +53,24 @@
 	float:right;
 }
 
+.show-chart{
+	font-size: 1.5em;
+	color: #fff;
+	background: rgba(0,0,0,0.6);
+	text-align:center;
+	padding: 5px;
+}
+
+#chart{
+  display:none;
+}
+
+#chart svg {
+  height: 400px;
+  width: 100%;
+}
+
+#chart svg .nv-legend text{
+	font-weight:bold;
+	font-size: 0.9em;
+}

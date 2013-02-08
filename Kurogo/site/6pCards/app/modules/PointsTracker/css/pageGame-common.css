@@ -118,19 +118,20 @@
 .player-container span{
 	width: 100%;
 	font-weight: bold;
-	font-size: 0.65em;
+	font-size: 0.7em;
 	color: #fff;
 	background: rgba(0,0,0,0.4);
-	height: 15px;
-	margin-top: -19px;
+	height: 20px;
+	margin-top: -25px;
 	display:block;
-	padding-left: 2px;
+	padding: 2px 0 0 2px;
 	box-sizing:border-box;
 	white-space: nowrap;
 	overflow:hidden;
 	text-overflow: ellipsis;
 	position:relative;
 	z-index: 2;
+	font-family: Helvetica !important;
 }
 
 .player-container .placement{

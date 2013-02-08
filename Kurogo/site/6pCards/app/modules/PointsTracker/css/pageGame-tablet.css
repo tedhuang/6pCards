@@ -17,3 +17,7 @@
 .score-table td{
 	font-size: 1.2em;
 }
+
+#breadcrumbs .homelink{
+	height: 44px;
+}
