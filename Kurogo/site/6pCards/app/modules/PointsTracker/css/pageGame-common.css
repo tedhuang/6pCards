@@ -5,10 +5,11 @@
 	margin: 10px;
 	border: 2px solid #C4B9A2;
 	position: relative;
-	height: 40px
+	height: 50px
 }
 
 .game-title{
+	font-size: 1.5em;
 	font-weight:bold;
 	color: #666;
 }
@@ -26,18 +27,18 @@
 }
 
 .pts_win{
-	font-size: 0.8em;
+	font-size: 1em;
 	position: absolute;
 	left: 10px;
-	bottom: 10px;
+	bottom: 5px;
 }
 
 .timestamp{
-	font-size: 0.65em;
+	font-size: 1em;
 	color: #666;
 	position: absolute;
 	right: 10px;
-	bottom: 10px;
+	bottom: 5px;
 }
 
 .score-container{
@@ -54,8 +55,8 @@
 }
 
 .score-table th{
-	font-size: 0.7em;
-	font-weight:bold;
+	font-size: 1.2em;
+	//font-weight:bold;
 	text-align:center;
 }
 

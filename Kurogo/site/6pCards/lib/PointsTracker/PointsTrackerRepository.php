@@ -351,6 +351,35 @@ class PointsTrackerRepository extends Repository{
  ***********************************************/
 /////////////////////////////////////////////////
 	
+	public function getGameCompletionStats(){
+		$conn = self::connection();
+
+		$sql = "SELECT team_red, team_blue, complete_time, 
+			(SELECT SUM(score_red_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_red_team, 
+			(SELECT SUM(score_blue_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_blue_team 
+		FROM games AS g WHERE status='COMPLETE' ORDER BY complete_time ASC";
+
+		$result = $conn->query($sql, array());
+
+		$score_data = $result->fetchAll();
+
+		$score_array = array();
+		
+		//initialize
+		for($i = 0; $i < 50 ; $i++){
+			$score_array[$i] = 0;
+		}
+
+		foreach($score_data as $game){
+			$score_diff = abs($game['score_red_team'] - $game['score_blue_team']);
+
+			$score_array[$score_diff]++;
+		}
+
+		return $score_array;
+	}
+
+
 	public function getAllPlayersWithStats() {
 		$conn = self::connection();
 		

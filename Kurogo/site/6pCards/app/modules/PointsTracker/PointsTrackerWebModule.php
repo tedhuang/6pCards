@@ -24,15 +24,15 @@ class PointsTrackerWebModule extends WebModule
 		$this->addInternalJavascript('/common/javascript/lib/json2.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery.easing.1.3.js');
 		
-//		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/');
 //		$this->addInternalJavascript('/common/javascript/lib/d3.v2.min.js');
 //		$this->addInternalJavascript('/common/javascript/lib/swipe.js');
 //		$this->addInternalJavascript('/common/javascript/lib/jquery.validate.min.js');
 		
 		$this->addInternalCSS('/common/javascript/lib/jquery-ui-1.9.2.custom/css/pepper-grinder/jquery-ui-1.9.2.custom.css');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic');
-		//$this->addExternalCSS('http://fonts.googleapis.com/css?family=Josefin+Slab:400,600,700');
-		
+		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto:700,500,400');
+		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto+Condensed');
+
 		$jennysIP = "75.157.140.7";
 		
 		if($_SERVER['REMOTE_ADDR'] == $jennysIP && $this->page != "piggysPage"){
@@ -45,11 +45,18 @@ class PointsTrackerWebModule extends WebModule
 				
 				break;
 			case 'index':
-				$game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'image' => './modules/PointsTracker/images/pageGameList.png');
-				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => './modules/PointsTracker/images/pageCreateGame.png');
-				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => './modules/PointsTracker/images/pageStats.png');
-				$placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'image' => './modules/PointsTracker/images/pageLeaderboard.png');
+				// $game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'image' => './modules/PointsTracker/images/pageGameList.png');
+				// $create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => './modules/PointsTracker/images/pageCreateGame.png');
+				// $stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => './modules/PointsTracker/images/pageStats.png');
+				// $placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'image' => './modules/PointsTracker/images/pageLeaderboard.png');
 				
+
+				$game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'background' => '#11b0c5');
+				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'background' => '#ff9617');
+				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'background' => '#96bf47');
+				$placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'background' => '#9c4275');
+				
+
 				$dashboardItems = array($game_list, $create_game, $stats, $placeholder);					
 				$this->assign('dashboardItems', $dashboardItems);
 				break;
@@ -118,7 +125,20 @@ class PointsTrackerWebModule extends WebModule
 				break;
 			
 			case 'pageStats':
-				
+				$score_array = $this->PointsTrackerRepository->getGameCompletionStats();
+
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/lib/d3.v2.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/nv.d3.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/tooltip.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/utils.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/legend.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/axis.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/scatter.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/line.js');	
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/historicalBar.js');
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/discreteBar.js');		
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/discreteBarChart.js');		
+				$this->addInternalCSS("/common/javascript/lib/nvd3/src/nv.d3.css");
 				break;
 			
 			case 'pageLeaderboard':
@@ -172,6 +192,16 @@ class PointsTrackerWebModule extends WebModule
 				break;
 		}
 		
+	}
+
+	private function generateScoreDifferenceGraph($score_array){
+		$json_data = "var data=[";
+		$json_data .= "{'key' : 'Point Difference', 'values' : [";
+
+		foreach($score_array as $score_entry){
+			
+			
+		}
 	}
 	
 	private function generateWinRatioGraphJson($data){

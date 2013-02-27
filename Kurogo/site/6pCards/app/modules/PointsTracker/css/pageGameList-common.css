@@ -8,19 +8,22 @@
 }
 
 .game .timestamp{
-	font-size: 0.65em;
+	font-size: 0.8em;
 	color: #666;
 	//float:right;
 }
 
 .vs-container{
-	font-size: 0.7em;
 	text-align:center;
 }
 
 .vs-container td{
 	width: 33%;
-	box-sizing:border-box;
+	box-sizing: border-box;
+}
+
+.vs-container .players{
+	font-size: 1.2em;
 }
 
 
@@ -42,4 +45,5 @@ h3{
 	font-style: italic;
 	text-align:center;
 	padding: 0 10px 0 10px;
+	font-size: 1.5em;
 }

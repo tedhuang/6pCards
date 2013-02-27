@@ -19,13 +19,13 @@
 							<td><div class="score">{$game.score_blue}</div></td>
 						</tr>
 						<tr>
-							<td>
+							<td class="players">
 							{foreach from=explode('|', $game.team_red) item=player_name}
 								{$player_name}
 							{/foreach}
 							</td>
 							<td class="vs-text">vs</td>
-							<td>
+							<td class="players">
 							{foreach from=explode('|', $game.team_blue) item=player_name}
 								{$player_name}
 							{/foreach}
@@ -63,13 +63,13 @@
 							<td><div class="score {if $game.score_red < $game.score_blue}WINNER{/if}">{$game.score_blue}</div></td>
 						</tr>
 						<tr>
-							<td>
+							<td  class="players">
 							{foreach from=explode('|', $game.team_red) item=player_name}
 								{$player_name}
 							{/foreach}
 							</td>
 							<td class="vs-text">vs</td>
-							<td>
+							<td  class="players">
 							{foreach from=explode('|', $game.team_blue) item=player_name}
 								{$player_name}
 							{/foreach}

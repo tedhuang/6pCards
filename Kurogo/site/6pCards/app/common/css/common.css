@@ -73,17 +73,34 @@ button {
 	width: 100%;
 }
 
-.dashboard-item{
-	width: 49%;	
-	box-sizing:border-box;
+#dashboard-item-list a{
+	width: 50%;
+	height: 200px;
+	padding: 10px;
+	float:left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 
-.dashboard-item, .dashboard-featured{
-	padding: 10px;
-	margin: 0;
-	display: inline-block;
+.dashboard-item{
+	
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+
+	font-size: 2em;
+	//font-weight: bold;
+	color: #fff;
+	height: 100%;
+	width: 100%;	
+	//margin: 10px;
+	//padding: 10px;
 	text-align: center;
+	display: inline-block;
+	opacity: 0.9;
+	box-shadow: 2px 2px 3px #000;
 }
+
 
 .dashboard-featured img{
 	width: 120px;

@@ -3,11 +3,11 @@
 
 body {
 	/* Site-wide page background color, and base font family, size and line spacing */
-	//background-color: @@@body_background_color@@@;
+	background-color: @@@body_background_color@@@;
 	//background-image: @@@body_background_image@@@;
-	
-	 background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat;
-	
+	 //background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat;
+
+
 	font: @@@base_font_size@@@/1.33em @@@primary_font_family@@@;
 }
 
@@ -44,7 +44,7 @@ h2 {
 }
 
 h3 {
-	font-family: @@@primary_font_family@@@;
+	font-family: "Roboto Condensed";
 	font-size: 100%;
 	font-weight: bold;
 	color: @@@secondary_heading_color@@@;
@@ -115,13 +115,17 @@ dt, .label, .legend, .legend h2, .legend h3, .searchlegend {
 
 #navbar {
 	height: 45px; 
-	background: @@@navbar_background_color@@@ url(/common/images/navback.png) repeat-x;
+	background: rgba(0,0,0,0.5);
 	font-size: 94.1%;
 }
 
 .breadcrumbs, .breadcrumbs a, .breadcrumbs a:visited, .pagetitle {
  	/* All breadcrumb links in nav bar */
 	color: @@@navbar_text_color@@@;
+	font-family:"Roboto Condensed";
+	font-weight: normal;
+	background-image: none;
+	
 }
 
 
