@@ -47,11 +47,11 @@
 	{if $inactiveGames|count == 0 || $inactiveGames[0]['game_id']==null}
 		<div class="response-message">No completed games</div>
 	{else}
-		<ul class="nav inactive-games-list">
+		<ul class="results inactive-games-list">
 		{foreach from=$inactiveGames item=game name=foo}
 			{if $lastTimestamp != date('Y-m-d',strtotime($game.timestamp)) && $smarty.foreach.foo.index != 0}
 			</ul>
-			<ul class="nav inactive-games-list">
+			<ul class="results inactive-games-list">
 			{/if}
 			<li class="game">
 				<a href="./pageGame?game_id={$game.game_id}">

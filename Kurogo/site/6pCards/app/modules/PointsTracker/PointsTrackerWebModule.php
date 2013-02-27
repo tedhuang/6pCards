@@ -29,7 +29,7 @@ class PointsTrackerWebModule extends WebModule
 //		$this->addInternalJavascript('/common/javascript/lib/jquery.validate.min.js');
 		
 		$this->addInternalCSS('/common/javascript/lib/jquery-ui-1.9.2.custom/css/pepper-grinder/jquery-ui-1.9.2.custom.css');
-		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic');
+		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,500,300');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto:700,500,400');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto+Condensed');
 
@@ -51,10 +51,25 @@ class PointsTrackerWebModule extends WebModule
 				// $placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'image' => './modules/PointsTracker/images/pageLeaderboard.png');
 				
 
-				$game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'background' => '#11b0c5');
-				$create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'background' => '#ff9617');
-				$stats = array('title' => 'Statistics', 'url' => 'pageStats', 'background' => '#96bf47');
-				$placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'background' => '#9c4275');
+				$game_list = array( 'title' => 'Game List', 
+									'url' => 'pageGameList', 
+									'background' => '#11b0c5', 
+									'image' => './modules/PointsTracker/images/dash-icons/pageGameList.png');
+									
+				$create_game = array('title' => 'New Game', 
+									'url' => 'pageCreateGame', 
+									'background' => '#ff9617' ,
+									'image' => './modules/PointsTracker/images/dash-icons/pageCreateGame.png');
+									
+				$stats = array( 'title' => 'Statistics', 
+								'url' => 'pageStats', 
+								'background' => '#96bf47', 
+								'image' => './modules/PointsTracker/images/dash-icons/pageStats.png');
+								
+				$placeholder = array('title' => 'Leaderboard', 
+									 'url' => 'pageLeaderboard', 
+									 'background' => '#9c4275', 
+									  'image' => './modules/PointsTracker/images/dash-icons/pageLeaderboard.png');
 				
 
 				$dashboardItems = array($game_list, $create_game, $stats, $placeholder);					

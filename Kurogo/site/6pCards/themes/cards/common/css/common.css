@@ -5,9 +5,7 @@ body {
 	/* Site-wide page background color, and base font family, size and line spacing */
 	background-color: @@@body_background_color@@@;
 	//background-image: @@@body_background_image@@@;
-	 //background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat;
-
-
+	//background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat;
 	font: @@@base_font_size@@@/1.33em @@@primary_font_family@@@;
 }
 
@@ -115,8 +113,21 @@ dt, .label, .legend, .legend h2, .legend h3, .searchlegend {
 
 #navbar {
 	height: 45px; 
-	background: rgba(0,0,0,0.5);
 	font-size: 94.1%;
+	/*
+	background: rgb(71,71,71);
+	background: -moz-linear-gradient(top,  rgba(71,71,71,1) 0%, rgba(14,14,14,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(71,71,71,1)), color-stop(100%,rgba(14,14,14,1)));
+	background: -webkit-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(14,14,14,1) 100%);
+	background: -o-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(14,14,14,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(14,14,14,1) 100%);
+	background: linear-gradient(to bottom,  rgba(71,71,71,1) 0%,rgba(14,14,14,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#474747', endColorstr='#0e0e0e',GradientType=0 );
+	*/
+	//background: url('./common/images/textures/cf-texture1.png') #222;
+	//background-size: 8px 8px;
+	//opacity: 0.8;
+	background: #222;
 }
 
 .breadcrumbs, .breadcrumbs a, .breadcrumbs a:visited, .pagetitle {

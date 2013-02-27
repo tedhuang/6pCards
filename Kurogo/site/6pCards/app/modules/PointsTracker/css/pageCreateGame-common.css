@@ -23,7 +23,7 @@ h3.message{
 	float: left;
 	margin: 2px;
 	padding: 2px;
-	border: 2px solid #999;
+	border: 2px solid #eee;
 	border-radius: 5px;
 	overflow:hidden;
 	position:relative;
@@ -87,6 +87,53 @@ h3.message{
 	margin: 10px 0 10px 0;
 }
 
+
+.team-container{
+	box-sizing:border-box;
+	height: 320px;
+	margin: 10px 0 10px 0;
+	padding-bottom: 30px;
+}
+
+.team-container table{
+	height: 100%;
+}
+
+.team-container table th{
+	height: 20px;	
+}
+
+.team-container-red,
+.team-container-blue{
+	height: auto;
+	padding: 0;
+	border-bottom: 1px solid #222;
+}
+
+.team-container-red{
+	border-right: 1px solid #222;
+}
+.team-container-blue{
+	border-left: 1px solid #444;
+}
+
+.player-num-red,
+.player-num-blue{
+	font-size: 1em;
+	font-weight:bold;
+	text-align:center;
+	border-bottom: 1px solid #222;
+}
+
+.player-num-red{
+	color: #dc5945;
+}
+
+.player-num-blue{
+	color: #11b0c5;
+}
+
+/*
 .team-container{
 	box-sizing:border-box;
 	height: 320px;
@@ -94,6 +141,7 @@ h3.message{
 	//border-radius: 5px;
 	//padding:1px;
 	margin: 10px 0 10px 0;
+	padding-bottom: 30px;
 }
 
 .team-container .player-num-red,
@@ -109,19 +157,22 @@ h3.message{
 .team-container-blue{
 	height: 95%;
 	width: 48%;
-	border-right: 1px solid #ccc;
 	padding: 10px 10px 0 0;
 	box-sizing:border-box;
 }
 .team-container-red{
 	float:left;
-	color: #f00;
+	color: #dc5945;
+	border-right: 1px solid #ccc;
 }
 
 .team-container-blue{
 	float:right;
-	color: #00f;
+	color: #11b0c5;
+	border-left: 1px solid #ccc;
 }
+*/
+
 
 .team-controls{
 	display:none;

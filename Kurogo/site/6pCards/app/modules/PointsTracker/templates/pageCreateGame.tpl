@@ -38,6 +38,20 @@
 		
 		<div class="team-container content-container">
 			<h3 class="team-selection-hint">Drag the user icons to each side</h3>
+			
+			<table>
+				<tr>
+					<th class="player-num-red"><span>0</span>/3 players</th>
+					<th class="player-num-blue"><span>0</span>/3 players</th>
+				</tr>
+				<tr>
+					<td class="team-container-red"></td>
+					<td class="team-container-blue"></td>
+				</tr>
+			
+			</table>
+			
+			<!--
 			<div class="team-container-red">
 				<div class="player-num-red"><span>0</span>/3 players</div>
 			</div>
@@ -46,10 +60,10 @@
 			</div>
 			<div class="clear"></div>
 		</div>
+		-->
 		
 		<div class="team-controls">
 			<div class="team-summary"></div>
-			
 			<div class="clear"></div>
 		</div>
 		
