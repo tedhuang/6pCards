@@ -1,17 +1,18 @@
 
 .game-details-container{
-	background: rgba(255,255,255,0.3);
 	padding: 10px;
 	margin: 10px;
-	border: 2px solid #C4B9A2;
+	//border: 1px solid #fff;
 	position: relative;
-	height: 50px
+	height: 50px;
+	background: rgba(255,255,255,0.3);
+	box-shadow: inset 1px 1px 3px #000;
 }
 
 .game-title{
 	font-size: 1.5em;
 	font-weight:bold;
-	color: #666;
+	color: #fff;
 }
 
 .status{
@@ -20,7 +21,7 @@
 	right: 0;
 	padding: 5px;
 	border-bottom-left-radius: 10px;
-	background: #C4B9A2;
+	background: #aaa;
 	font-weight: bold;
 	font-size: 0.8em;
 	color: #fff;
@@ -31,11 +32,12 @@
 	position: absolute;
 	left: 10px;
 	bottom: 5px;
+	color: #fff;
 }
 
 .timestamp{
 	font-size: 1em;
-	color: #666;
+	color: #fff;
 	position: absolute;
 	right: 10px;
 	bottom: 5px;
@@ -49,20 +51,26 @@
 .score-table{
 	width: 100%;
 	height: 100%;
-	border: 2px solid #C4B9A2;
+	//border: 2px solid #C4B9A2;
 	text-align:center;
+	//background: rgba(255,255,255,0.3);
+	
+	padding: 5px;
 	background: rgba(255,255,255,0.3);
+	box-shadow: inset 1px 1px 3px #000;
 }
 
 .score-table th{
 	font-size: 1.2em;
 	//font-weight:bold;
 	text-align:center;
+	color: #fff;
+	font-weight:bold;
 }
 
 .score-table td{
-	font-size: 0.9em;
-	font-weight:bold;
+	font-size: 1.5em;
+	color: #fff;
 }
 
 .score-table td img.delete_score{
@@ -78,7 +86,7 @@
 }
 
 .score-table td.round_num{
-	color: #666;
+	color: #f0f0f0;
 	font-weight:normal;
 	text-align: right;
 	width: 10px;
@@ -87,20 +95,29 @@
 .score-control{
 	margin-bottom: 10px;
 	padding: 10px;
-	border: 2px solid #C4B9A2;
+	//border: 1px solid #fff;
 	background: rgba(255,255,255,0.3);
+	box-shadow: inset 1px 1px 3px #000;
 }
 
 .score-control-message{
 	width: 100%;
 	text-align:center;
-	font-size: 0.8em;
+	font-size: 1.2em;
+	color: #fff;
 	font-weight: bold;
 }
 
 .players-container{
 	margin: 5px 0 5px 0;	
 }
+
+.player-container .placement{
+	width: 60px !important;
+	height: 60px !important;
+	font-size: 4em;
+}
+
 
 .player-container{
 	float: left;
@@ -112,8 +129,8 @@
 	position:relative;
 	cursor:pointer;
 	line-height: normal;
-	width: 40px;
-	height: 40px
+	width: 60px !important;
+	height: 60px !important;
 }
 
 .player-container span{
@@ -140,12 +157,12 @@
 	z-index:3;
 	left: 0;
 	top: 0;
-	height: 40px;
-	width: 40px;
-	padding: 5px 0 0 12px;
+	width: 100px !important;
+	height: 100px !important;
+	font-size: 3em;
+	padding: 5px 0 0 8px;
 	color: #FFD700;
 	font-weight: bold;
-	font-size: 2em;
 	background: rgba(0,0,0,0.5);
 	display:none;
 }

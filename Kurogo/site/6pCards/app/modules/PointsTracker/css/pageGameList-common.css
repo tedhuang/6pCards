@@ -1,6 +1,32 @@
 
-.nav{
+.heading{
+	font-size: 1.5em;
+	color: #fff;
+	padding: 0 10px 5px 10px;
+}
 
+.heading.response-message{
+	text-align:center;
+}
+
+.nav{
+	border: 0px;
+	box-shadow: inset 1px 1px 2px #000;
+	background: #666;
+	padding-left: 2px;
+}
+
+.nav li.game{
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #555;
+}
+
+.nav li.game:first-child{
+	border-top: 0px;
+}
+
+.nav li.game:last-child{
+	border-bottom: 0px;
 }
 
 .game{
@@ -8,8 +34,8 @@
 }
 
 .game .timestamp{
-	font-size: 0.8em;
-	color: #666;
+	font-size: 1em;
+	color: #fff;
 	//float:right;
 }
 
@@ -20,30 +46,23 @@
 .vs-container td{
 	width: 33%;
 	box-sizing: border-box;
+	color: #fff;
 }
 
 .vs-container .players{
 	font-size: 1.2em;
+	color: #fff;
 }
-
 
 .game .score{
 	font-size: 2em;
 	font-weight:bold;
 	text-align: center;
+	color: #ddd;
 }
 
 .game .score.WINNER{
 	color: #FBB117;
 }
 
-h3{
-	padding: 0 10px 0 10px;
-}
 
-.response-message{
-	text-align:center;
-	padding: 0 10px 15px 10px;
-	font-size: 1.5em;
-	color: #fff;
-}
