@@ -33,11 +33,10 @@ class PointsTrackerWebModule extends WebModule
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto:700,500,400');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto+Condensed');
 
-		$jennysIP = "75.157.140.7";
-		
-		if($_SERVER['REMOTE_ADDR'] == $jennysIP && $this->page != "piggysPage"){
-			$this->redirectTo('piggysPage');
-		}
+//		$jennysIP = "75.157.140.7";
+//		if($_SERVER['REMOTE_ADDR'] == $jennysIP && $this->page != "piggysPage"){
+//			$this->redirectTo('piggysPage');
+//		}
 
 		
 		switch ($this->page) {
@@ -49,7 +48,6 @@ class PointsTrackerWebModule extends WebModule
 				// $create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => './modules/PointsTracker/images/pageCreateGame.png');
 				// $stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => './modules/PointsTracker/images/pageStats.png');
 				// $placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'image' => './modules/PointsTracker/images/pageLeaderboard.png');
-				
 
 				$game_list = array( 'title' => 'Game List', 
 									'url' => 'pageGameList', 
@@ -156,6 +154,7 @@ class PointsTrackerWebModule extends WebModule
 				$this->addInternalCSS("/common/javascript/lib/nvd3/src/nv.d3.css");
 				break;
 			
+			case 'iframeLeaderboard':
 			case 'pageLeaderboard':
 				$data = $this->PointsTrackerRepository->getAllPlayersWithStats();
 				

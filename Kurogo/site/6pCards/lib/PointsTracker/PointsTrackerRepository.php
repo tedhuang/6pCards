@@ -227,7 +227,6 @@ class PointsTrackerRepository extends Repository{
 //				$sql = "INSERT INTO player_score (game_id, team_color, points_earned, player_name, score_id) VALUES (?,?,?,?,?)";
 //				$conn->query($sql, array($game_id, ));
 				
-								
 				return array('score_id' => $lastInsert, 'scores' => $this->getLastestScore($game_id));
 			}
 			else{

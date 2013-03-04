@@ -33,7 +33,6 @@ class PointsTrackerAPIModule extends APIModule {
 				}
 				else{
 					
-					
 	        		//Make sure you can only add score if game is not complete
 	        		if(!$this->PointsTrackerRepository->isGameComplete($game_id)){
 	        			
@@ -53,7 +52,11 @@ class PointsTrackerAPIModule extends APIModule {
 	        			
 		        		if( $score_result !== false ){
 		        			$success = true;
+							
+							
+							$this->updateDashboardScore($placement, $score_result);
 
+							
 		        			//Check if adding score caused game to complete
 		        			if($this->PointsTrackerRepository->isGameComplete($game_id)){
 		        				$isComplete = true;
@@ -125,6 +128,8 @@ class PointsTrackerAPIModule extends APIModule {
 				if(count($players["RED"]) == 3 || count($players["BLUE"]) == 3){
 					$curr_game_id = $this->PointsTrackerRepository->createGame($players, $points_to_win);
 					
+					$this->updateDashboardNewGame($players["RED"], $players["BLUE"]);
+					
 					if($curr_game_id !== false){
 						$_SESSION['curr_game_id'] = $curr_game_id;
 						$success = true;
@@ -156,4 +161,67 @@ class PointsTrackerAPIModule extends APIModule {
         
     }
     
+    public function updateDashboardNewGame($team_1, $team_2){
+    	$team_1_array = array();
+    	$team_2_array = array();
+    	
+    	foreach($team_1 as $player_name){
+    		$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+    		array_push($team_1_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
+    		
+    		Kurogo::log(LOG_ALERT, "player: " . $player_name, 'module');
+    	}
+    	
+    	foreach($team_2 as $player_name){
+    		$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+    		array_push($team_2_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
+    		
+    		Kurogo::log(LOG_ALERT, "player: " . $player_name, 'module');
+    	}
+    	
+    	DashingController::sendNewGame($team_1_array, $team_2_array);
+    	
+    	
+    	
+    	
+    }
+    
+    //Updates the dashboard's points widget and positions widget
+    public function updateDashboardScore($placement, $score_result){
+		$placement_array = array();
+		$team_1_array = array();
+		$team_2_array = array();
+		
+		for($i = 0; $i < count($placement) ; $i++){
+			
+			$temp = explode('-',$placement[$i]);
+			$player_name = $temp[0];
+			$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+			
+			$item = array();
+			$item['label'] = ($i+1). ". " .$player_name;
+			$item['value'] = "http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=150&d=mm";
+			
+			array_push($placement_array, $item);
+			
+			if($temp[1] == "RED"){
+				array_push($team_1_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
+			}
+			else{
+				array_push($team_2_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
+			}
+			
+		}
+		
+		//Push result to dashboard
+		DashingController::sendScore('RED', $score_result['scores']['RED'], $team_1_array);
+		DashingController::sendScore('BLUE', $score_result['scores']['BLUE'], $team_2_array);
+		DashingController::sendPlacement($placement_array);
+		
+		
+    }
+    
 }
+
+
+
