@@ -5,7 +5,7 @@ h3.message{
 	box-sizing:border-box;
 	text-align:center;
 	//text-transform: uppercase;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	font-weight: normal;
 }
 
@@ -66,6 +66,12 @@ h3.message{
 }
 
 
+.use-same-players{
+	margin-top: 10px;
+	width: 100%;
+}
+
+
 .players-controls{
 	margin-top: 10px;
 	display:none;
@@ -106,7 +112,7 @@ h3.message{
 .team-container-red,
 .team-container-blue{
 	height: auto;
-	padding: 0;
+	padding: 5px;
 	border-bottom: 1px solid #222;
 }
 
@@ -132,46 +138,6 @@ h3.message{
 .player-num-blue{
 	color: #11b0c5;
 }
-
-/*
-.team-container{
-	box-sizing:border-box;
-	height: 320px;
-	//border: 2px solid #999;
-	//border-radius: 5px;
-	//padding:1px;
-	margin: 10px 0 10px 0;
-	padding-bottom: 30px;
-}
-
-.team-container .player-num-red,
-.team-container .player-num-blue{
-	font-size: 1em;
-	font-weight:bold;
-	text-align:center;
-	width: 100%;
-	border-bottom: 1px solid #ccc;
-}
-
-.team-container-red,
-.team-container-blue{
-	height: 95%;
-	width: 48%;
-	padding: 10px 10px 0 0;
-	box-sizing:border-box;
-}
-.team-container-red{
-	float:left;
-	color: #dc5945;
-	border-right: 1px solid #ccc;
-}
-
-.team-container-blue{
-	float:right;
-	color: #11b0c5;
-	border-left: 1px solid #ccc;
-}
-*/
 
 
 .team-controls{

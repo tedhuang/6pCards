@@ -21,6 +21,8 @@
 		</div>
 		<div class="clear"></div>
 		
+		<button class="use-same-players">Use players from last game</button>
+		
 		<div class="players-controls">
 			<button class="players-submit leftButton">Done</button>
 			<button class="players-reset rightButton">Reset</button>
@@ -68,5 +70,6 @@
 		</div>
 		
 		<button class="team-submit fullButton">Submit</button>
+		<br><br><br>
 	</div>
 </div>

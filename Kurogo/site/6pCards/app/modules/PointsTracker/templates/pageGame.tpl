@@ -1,6 +1,6 @@
 {include file="findInclude:common/templates/header.tpl"  scalable=0}
 
-<div class="game-details-container">
+<div class="game-details-container content-container">
 	<div>
 		<div class="game-title">Game {$game.game_id}</div>
 		<div class="status">{$game.status}</div>
@@ -10,8 +10,8 @@
 	<div class="clear"></div>
 </div>
 
-<div class="score-container" >
-	<table class="score-table" {if $score_record|count == 0}style="display:none;"{/if}>
+<div class="score-container">
+	<table class="score-table content-container" {if $score_record|count == 0}style="display:none;"{/if}>
 		<tr class="heading-row">
 			<th>#</th>
 			<th>{foreach from=$game.t_red item=player}{$player.player_name} {/foreach}</th>
@@ -27,11 +27,11 @@
 		{/foreach}
 	</table>
 
-	<div class="score-control">
+	<div class="score-control content-container">
 	
 		<div class="score-control-message">Select 1st place</div>
 		
-		<div class="players-container">
+		<div class="players-container ">
 		{foreach from=$game.t_red item=player}
 			<div class="player-container T_RED" title="{$player.player_name}">
 				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=60/>

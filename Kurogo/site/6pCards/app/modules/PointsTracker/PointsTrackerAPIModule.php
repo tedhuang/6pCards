@@ -79,8 +79,6 @@ class PointsTrackerAPIModule extends APIModule {
 								   'isComplete' => $isComplete, 
 								   'message' => $message,
 								   'score_result' => $score_result);     	
-            	$this->setResponse($response);
-            	$this->setResponseVersion(1);
         		break;
         	
         	case "removeScore":
@@ -97,8 +95,6 @@ class PointsTrackerAPIModule extends APIModule {
         		}
         	
         		$response = array( 'success' =>  $success, 'message' => $message);     	
-            	$this->setResponse($response);
-            	$this->setResponseVersion(1);
             	break;
             	
         	case "createPlayer":
@@ -108,8 +104,31 @@ class PointsTrackerAPIModule extends APIModule {
         		}
         		
         		$response = array( 'success' =>  $success);     	
-            	$this->setResponse($response);
-            	$this->setResponseVersion(1);
+        		break;
+        	
+        	case "getPlayersFromLastGame":
+        		$success = false;
+        		$message = "no message";
+        		$last_game = $this->PointsTrackerRepository->getLastGame();
+        		$players = array();
+        		
+        		if($last_game){
+        			$team_red = explode('|',$last_game['team_red']);
+        			$team_blue = explode('|',$last_game['team_blue']);
+        			
+        			foreach($team_red as $player_name){
+        				array_push($players, $player_name);
+        			}
+    				foreach($team_blue as $player_name){
+        				array_push($players, $player_name);
+        			}
+        			$success = true;
+        		}
+        		else{
+        			$mesage = "Unable to get last game";
+        		}
+        		
+        		$response = array('success' => $success, 'message'=> $message, 'players'=>$players);
         		break;
         	
         	case "createGame":
@@ -144,8 +163,6 @@ class PointsTrackerAPIModule extends APIModule {
 				
         		
         		$response = array( 'success' =>  $success, "message" => $message, "game_id" =>  $curr_game_id);     	
-            	$this->setResponse($response);
-            	$this->setResponseVersion(1);
         		break;
         		
         	case "updateGame":
@@ -153,12 +170,11 @@ class PointsTrackerAPIModule extends APIModule {
         		
         		
         		$response = array( 'success' =>  $success);     	
-            	$this->setResponse($response);
-            	$this->setResponseVersion(1);
         		break;
         		
         }
-        
+		$this->setResponse($response);
+    	$this->setResponseVersion(1);
     }
     
     public function updateDashboardNewGame($team_1, $team_2){

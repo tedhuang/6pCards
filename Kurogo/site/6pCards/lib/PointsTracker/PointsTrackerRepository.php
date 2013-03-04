@@ -119,6 +119,20 @@ class PointsTrackerRepository extends Repository{
 		return $result->fetchAll();
 	}
 	
+	public function getLastGame(){
+		$conn = self::connection();
+		$sql = "SELECT * from games ORDER BY game_id DESC LIMIT 1";
+		$result = $conn->query($sql, array());
+		$row = $result->fetch();
+		
+		if(!empty($row)){
+			return $row;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public function getGameById($game_id){
 		$conn = self::connection();
 		$sql = "SELECT * FROM games WHERE game_id=?";

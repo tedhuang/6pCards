@@ -21,6 +21,11 @@ $(document).ready(function(){
 		});
 	});
 	
+	$(".use-same-players").click(function(){
+		$(this).html("<div class='loadImg'><img src='./common/images/loader.gif' width=30 /></div>");
+		usePlayersFromLastGame();
+	});
+	
 	//Player selection
 	$(".player-container").click(function(){
 		if(!player_selection_locked){
@@ -95,8 +100,8 @@ function startTeamSelection(){
 				'Red Team: ' + team_red+ 
 				'<br> Blue Team: ' + team_blue);
 		
-		$(".team-container-red").find('.player-num-red').find("span").text(team_red.length);
-		$(".team-container-blue").find('.player-num-blue').find("span").text(team_blue.length);
+		$('.player-num-red').find("span").html(team_red.length);
+		$('.player-num-blue').find("span").html(team_blue.length);
 	});
 	
 	$(".team-submit").click(function(){
@@ -178,8 +183,8 @@ function clearPlayers(){
 
 	team_red = new Array();
 	team_blue = new Array();
-	$(".team-container-red").find('.player-num-red').find("span").text(team_red.length);
-	$(".team-container-blue").find('.player-num-blue').find("span").text(team_blue.length);
+	$('.player-num-red').find("span").text(team_red.length);
+	$('.player-num-blue').find("span").text(team_blue.length);
 	$(".team-container").find(".player-container").remove();
 	
 }
@@ -200,7 +205,7 @@ function addPlayer(player_name, team_color){
 			else{
 				//ADD player to red
 				team_red.push(player_name);
-				$(".team-container-red").find('.player-num-red').find("span").text(team_red.length);
+				$('.player-num-red').find("span").text(team_red.length);
 			}
 		}
 		
@@ -217,7 +222,7 @@ function addPlayer(player_name, team_color){
 			else{
 				//ADD player to blue
 				team_blue.push(player_name);
-				$(".team-container-blue").find('.player-num-blue').find("span").text(team_blue.length);
+				$('.player-num-blue').find("span").text(team_blue.length);
 			}
 		}
 	}
@@ -286,9 +291,26 @@ function revertDraggable($selector) {
     });
 }
 
-
-function isPlayerSelectionComplete(){
-	
+function usePlayersFromLastGame(){
+	makeAPICall('GET', "PointsTracker" , 'getPlayersFromLastGame', null, function(response){
+		if(response.success){
+			$(".use-same-players").hide();
+			for(var i=0; i < response.players.length; i++){
+				players_selected.push(response.players[i]);
+			}
+			
+			$(".player-container").each(function(){
+				if( $.inArray( $(this).attr('title'), players_selected ) != -1){
+					$(this).addClass("SELECTED");
+				}
+			});
+			
+			startTeamSelection();
+		}
+		else{
+			alert("Failed to get players from last game. Error: " + response.message);
+		}
+	});
 }
 
 function startGame(){

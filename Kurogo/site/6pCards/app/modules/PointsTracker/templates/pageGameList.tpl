@@ -14,9 +14,9 @@
 
 					<table class="vs-container">
 						<tr>
-							<td><div class="score">{$game.score_red}</div></td>
+							<td><div class="score">{$game.score_red|default: "0"}</div></td>
 							<td></td>
-							<td><div class="score">{$game.score_blue}</div></td>
+							<td><div class="score">{$game.score_blue|default: "0"}</div></td>
 						</tr>
 						<tr>
 							<td class="players">
