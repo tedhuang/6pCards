@@ -4,7 +4,3 @@
 <div id="chart">
 	<svg></svg>
 </div>
-
-
-
-{include file="findInclude:common/templates/footer.tpl"}

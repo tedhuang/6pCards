@@ -13,7 +13,7 @@
 <div class="score-container">
 	<table class="score-table content-container" {if $score_record|count == 0}style="display:none;"{/if}>
 		<tr class="heading-row">
-			<th>#</th>
+			<th></th>
 			<th>{foreach from=$game.t_red item=player}{$player.player_name} {/foreach}</th>
 			<th>{foreach from=$game.t_blue item=player}{$player.player_name} {/foreach}</th>
 		</tr>
@@ -31,21 +31,22 @@
 	
 		<div class="score-control-message">Select 1st place</div>
 		
-		<div class="players-container ">
-		{foreach from=$game.t_red item=player}
-			<div class="player-container T_RED" title="{$player.player_name}">
-				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=60/>
-				<span>{$player.player_name}</span>
-				<div class="placement">1</div>
-			</div>
-		{/foreach}
-		{foreach from=$game.t_blue item=player}
-			<div class="player-container T_BLUE" title="{$player.player_name}">
-				<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=60/>
-				<span>{$player.player_name}</span>
-				<div class="placement">6</div>
-			</div>
-		{/foreach}
+		<div class="players-container">
+			{foreach from=$game.t_red item=player}
+				<div class="player-container T_RED" title="{$player.player_name}">
+					<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=80/>
+					<span>{$player.player_name}</span>
+					<div class="placement">1</div>
+				</div>
+			{/foreach}
+			
+			{foreach from=$game.t_blue item=player}
+				<div class="player-container T_BLUE" title="{$player.player_name}">
+					<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=80/>
+					<span>{$player.player_name}</span>
+					<div class="placement">6</div>
+				</div>
+			{/foreach}
 		</div>
 		<div class="clear"></div>
 	</div>

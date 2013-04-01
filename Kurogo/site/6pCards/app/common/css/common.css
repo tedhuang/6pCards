@@ -4,11 +4,11 @@ button {
 	background: #11b0c5;
 	border: none;
 	color: #FAF8F1;
-	font-size: 1em;
+	font-size: 1.2em;
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	line-height: 20px;
-	padding: 10px 14px;
+	padding: 15px 14px;
 	position: relative;
 	text-transform: uppercase;
 	box-shadow: 1px 1px 2px #000;
@@ -16,7 +16,7 @@ button {
 	-moz-box-shadow: 1px 1px 2px #000;
 	
 }button:hover {
-	-webkit-filter: brightness(0.05);
+	-webkit-filter: brightness(110%);
 }button:active {
 	position:relative;
 	top:1px;
@@ -105,7 +105,7 @@ button {
 
 
 .dashboard-item:hover{
-	-webkit-filter: brightness(0.1);
+	-webkit-filter: brightness(110%);
 }
 
 .dashboard-item:active{
@@ -118,7 +118,7 @@ button {
 
 .dashboard-item span{
 	color: #fff;
-	position: absolute;
+	//position: absolute;
 	bottom: 15px;
 	width: 100%;
 	font-size: 1.4em;

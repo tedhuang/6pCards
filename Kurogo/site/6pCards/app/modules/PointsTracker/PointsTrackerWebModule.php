@@ -44,11 +44,6 @@ class PointsTrackerWebModule extends WebModule
 				
 				break;
 			case 'index':
-				// $game_list = array('title' => 'Game List', 'url' => 'pageGameList', 'image' => './modules/PointsTracker/images/pageGameList.png');
-				// $create_game = array('title' => 'New Game', 'url' => 'pageCreateGame', 'image' => './modules/PointsTracker/images/pageCreateGame.png');
-				// $stats = array('title' => 'Statistics', 'url' => 'pageStats', 'image' => './modules/PointsTracker/images/pageStats.png');
-				// $placeholder = array('title' => 'Leaderboard', 'url' => 'pageLeaderboard', 'image' => './modules/PointsTracker/images/pageLeaderboard.png');
-
 				$game_list = array( 'title' => 'Game List', 
 									'url' => 'pageGameList', 
 									'background' => '#11b0c5', 
@@ -138,7 +133,7 @@ class PointsTrackerWebModule extends WebModule
 				break;
 			
 			case 'pageStats':
-				$score_array = $this->PointsTrackerRepository->getGameCompletionStats();
+				//$score_array = $this->PointsTrackerRepository->getGameCompletionStats();
 
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/lib/d3.v2.js');			
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/nv.d3.js');			
@@ -158,6 +153,9 @@ class PointsTrackerWebModule extends WebModule
 			case 'pageLeaderboard':
 				$data = $this->PointsTrackerRepository->getAllPlayersWithStats();
 				
+				
+				$player_score = $this->PointsTrackerRepository->getPlayerScore();
+				
 				$win_ratio = array();
 				foreach($data['player_stats'] as $player_name => &$stats){
 					$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
@@ -173,7 +171,7 @@ class PointsTrackerWebModule extends WebModule
 				array_multisort($win_ratio, SORT_DESC, $data['player_stats']);
 
 				$json_data =  $this->generateWinRatioGraphJson($data);
-
+				$this->assign('player_score', $player_score);
 				$this->assign('player_stats' , $data['player_stats']);	
 				$this->addInlineJavascript($json_data);
 				

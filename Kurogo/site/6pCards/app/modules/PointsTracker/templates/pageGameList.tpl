@@ -33,7 +33,7 @@
 						</tr>
 					</table>
 					<div class="clear"></div>
-					<span class="timestamp">Started on {date( 'Y-m-d h:iA',strtotime($game.timestamp))}</span>
+					<div class="timestamp">{date( 'Y-m-d h:iA',strtotime($game.timestamp))}</div>
 					<div class="clear"></div>
 				</a>
 			</li>
@@ -77,7 +77,7 @@
 						</tr>
 					</table>
 					<div class="clear"></div>
-					<span class="timestamp">Started on {date( 'Y-m-d h:iA',strtotime($game.timestamp))}</span>
+					<div class="timestamp">{date( 'Y-m-d h:iA',strtotime($game.timestamp))}</div>
 					<div class="clear"></div>
 				</a>
 			</li>

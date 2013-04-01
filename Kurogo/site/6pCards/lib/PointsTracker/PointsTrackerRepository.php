@@ -237,9 +237,10 @@ class PointsTrackerRepository extends Repository{
 			$lastInsert = $conn->lastInsertId('score_id');		
 			if($lastInsert != ""){
 				
-				//TODO: insert individual player scores here				
-//				$sql = "INSERT INTO player_score (game_id, team_color, points_earned, player_name, score_id) VALUES (?,?,?,?,?)";
-//				$conn->query($sql, array($game_id, ));
+				for($i=0; $i < count($p_data); $i++){
+					$sql = "INSERT INTO player_score (game_id, team_color, position, player_name, score_id) VALUES (?,?,?,?,?)";
+					$conn->query( $sql, array($game_id, $p_data[$i]['team_color'], ($i+1), $p_data[$i]['player_name'], $lastInsert ) );
+				}
 				
 				return array('score_id' => $lastInsert, 'scores' => $this->getLastestScore($game_id));
 			}
@@ -391,7 +392,86 @@ class PointsTrackerRepository extends Repository{
 
 		return $score_array;
 	}
-
+	
+	public function getPlayerScore(){
+		
+		$conn = self::connection();
+		
+		$sql = "SELECT team_red, team_blue, complete_time, 
+					(SELECT SUM(score_red_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_red_team, 
+					(SELECT SUM(score_blue_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_blue_team 
+				FROM games AS g WHERE status='COMPLETE' ORDER BY complete_time ASC";
+		
+		$result = $conn->query($sql,array());
+		
+		$player_stats = array();
+		
+		$score_data = $result->fetchAll();
+		
+		$players = $this->getAllPlayers();
+		
+		foreach($players as $player){
+			$player_name = $player['player_name'];
+			$player_stats[$player_name] = array(
+				'score' => 0,
+				'games_played' => 0
+			);
+		}
+		
+		foreach($score_data as $game_data){
+			if($game_data['score_red_team'] > $game_data['score_blue_team']){
+				$winners = explode('|', $game_data['team_red']);
+				$losers = explode('|', $game_data['team_blue']);
+			}
+			else{
+				$winners = explode('|', $game_data['team_blue']);		
+				$losers = explode('|', $game_data['team_red']);
+			}
+			
+			$point_diff = abs($game_data['score_red_team'] - $game_data['score_blue_team']);
+			
+			if($game_data['score_red_team'] > 50 || $game_data['score_blue_team'] > 50){
+				$isOverpoints = true;
+			}
+			else{
+				$isOverpoints = false;
+			}
+			
+			foreach($winners as $player_name){
+				
+				if($point_diff < 26){
+					$awarded_score = 10 + ($point_diff/10);
+				}
+				else{
+					$awarded_score = 10 - ($point_diff/10);
+				}
+								
+				$player_stats[$player_name]['score'] += $awarded_score;				
+				$player_stats[$player_name]['games_played']++;
+				
+				if($isOverpoints){
+					$player_stats[$player_name]['score'] += 2;
+				}
+			}
+			
+			foreach($losers as $player_name){
+				$player_stats[$player_name]['games_played']++;
+				
+				if($isOverpoints){
+					$player_stats[$player_name]['score'] += 2;
+				}
+			}
+		
+		}
+		
+		foreach($player_stats as &$entry){
+			$entry['score'] = ($entry['score']/$entry['games_played'])*100;
+		}
+		
+		//echo json_encode($player_stats);
+		return $player_stats;
+	}
+	
 
 	public function getAllPlayersWithStats() {
 		$conn = self::connection();
@@ -431,30 +511,12 @@ class PointsTrackerRepository extends Repository{
 			}
 			
 			foreach($winners as $player_name){
-//				if(!isset($player_stats[$player_name])){
-//					$player_stats[$player_name] = array(
-//						'games_played' => 0,
-//						'games_won' => 0,
-//						'ratio_history' => array()
-//					);
-//				}
-
 				$player_stats[$player_name]['games_won']++;
 				$player_stats[$player_name]['games_played']++;
 				
-//				$win_ratio = $player_stats[$player_name]['games_won']/$player_stats[$player_name]['games_played'];				
-//				array_push($player_stats[$player_name]['ratio_history'], array("timestamp" => $game_data['complete_time'],
-//																				"win_ratio" => $win_ratio ));
 			}
 			
 			foreach($losers as $player_name){
-//				if(!isset($player_stats[$player_name])){
-//					$player_stats[$player_name] = array(
-//						'games_played' => 0,
-//						'games_won' => 0,
-//						'ratio_history' => array()
-//					);
-//				}
 				$player_stats[$player_name]['games_played']++;
 			}
 			

@@ -92,7 +92,7 @@
 }
 
 .score-table td.round_num{
-	color: #f0f0f0;
+	color: #333;
 	font-weight:normal;
 	text-align: right;
 	width: 10px;
@@ -115,7 +115,8 @@
 }
 
 .players-container{
-	margin: 5px 0 5px 0;	
+	margin: 5px 0 5px 0;
+	
 }
 
 .player-container .placement{
@@ -127,6 +128,7 @@
 
 .player-container{
 	float: left;
+	//display: inline-block;
 	margin: 2px;
 	padding: 2px;
 	border: 2px solid #eee;
@@ -135,8 +137,8 @@
 	position:relative;
 	cursor:pointer;
 	line-height: normal;
-	width: 60px !important;
-	height: 60px !important;
+	width: 80px !important;
+	height: 80px !important;
 }
 
 .player-container span{

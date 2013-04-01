@@ -196,10 +196,7 @@ class PointsTrackerAPIModule extends APIModule {
     	}
     	
     	DashingController::sendNewGame($team_1_array, $team_2_array);
-    	
-    	
-    	
-    	
+
     }
     
     //Updates the dashboard's points widget and positions widget

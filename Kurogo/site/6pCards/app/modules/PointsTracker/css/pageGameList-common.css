@@ -16,6 +16,11 @@
 	padding-left: 2px;
 }
 
+.nav a{
+	background-image: none;
+	padding: 8px;
+}
+
 .nav li.game{
 	border-top: 1px solid #777;
 	border-bottom: 1px solid #555;
@@ -34,9 +39,13 @@
 }
 
 .game .timestamp{
-	font-size: 1em;
-	color: #fff;
-	//float:right;
+	font-size: 0.8em;
+	color: #ccc;
+	width: 100%;
+	text-align: center;
+	margin-top: -20px;
+	//position: absolute;
+	//bottom: 5px;
 }
 
 .vs-container{
