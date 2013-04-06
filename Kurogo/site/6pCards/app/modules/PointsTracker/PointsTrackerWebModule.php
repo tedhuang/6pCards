@@ -154,7 +154,7 @@ class PointsTrackerWebModule extends WebModule
 				$data = $this->PointsTrackerRepository->getAllPlayersWithStats();
 				
 				
-				$player_score = $this->PointsTrackerRepository->getPlayerScore();
+				
 				
 				$win_ratio = array();
 				foreach($data['player_stats'] as $player_name => &$stats){
@@ -165,10 +165,26 @@ class PointsTrackerWebModule extends WebModule
 					$win_ratio[$player_name] = $stats['games_won']/$stats['games_played'];
 				}
 				
-
-				
 				//sort array by win ratio
 				array_multisort($win_ratio, SORT_DESC, $data['player_stats']);
+				
+
+
+
+
+				$player_score = $this->PointsTrackerRepository->getPlayerScore();
+				$score = array();
+				
+				foreach($player_score as $player_name => &$p_score){
+					$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+					$p_score['gravatar_email'] = $player['gravatar_email']; 
+					$score[$player_name] = $p_score['score'];
+				}
+				array_multisort($score, SORT_DESC, $player_score);
+				
+
+
+
 
 				$json_data =  $this->generateWinRatioGraphJson($data);
 				$this->assign('player_score', $player_score);
@@ -211,7 +227,7 @@ class PointsTrackerWebModule extends WebModule
 		$json_data .= "{'key' : 'Point Difference', 'values' : [";
 
 		foreach($score_array as $score_entry){
-			
+			//TODO: implement it
 			
 		}
 	}

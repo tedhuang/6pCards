@@ -46,10 +46,10 @@ class PointsTrackerRepository extends Repository{
 	}
 	
 
-	public function updateGame($game_id, $status, $complete_time, $tag = "", $isOverpoints = 0){
+	public function updateGame($game_id, $status, $complete_time, $tag = ""){
 		$conn = self::connection();
-		$sql = "UPDATE games SET status=?, complete_time=?, tag=?, isOverpoints=? WHERE game_id=?";
-		$conn->query($sql, array($status, $complete_time, $tag, $isOverpoints, $game_id) );
+		$sql = "UPDATE games SET status=?, complete_time=?, tag=? WHERE game_id=?";
+		$conn->query($sql, array($status, $complete_time, $tag, $game_id) );
 		
 		return true;
 	}
@@ -393,22 +393,21 @@ class PointsTrackerRepository extends Repository{
 		return $score_array;
 	}
 	
+	//Generates customized player score based on game records
 	public function getPlayerScore(){
 		
 		$conn = self::connection();
 		
-		$sql = "SELECT team_red, team_blue, complete_time, 
+		$sql = "SELECT team_red, team_blue, complete_time, game_id, isOverpoints, 
 					(SELECT SUM(score_red_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_red_team, 
 					(SELECT SUM(score_blue_team) FROM game_score AS gs WHERE gs.game_id=g.game_id ) AS score_blue_team 
 				FROM games AS g WHERE status='COMPLETE' ORDER BY complete_time ASC";
 		
 		$result = $conn->query($sql,array());
-		
 		$player_stats = array();
-		
-		$score_data = $result->fetchAll();
-		
+		$games = $result->fetchAll();
 		$players = $this->getAllPlayers();
+		$isOverpoints = false;
 		
 		foreach($players as $player){
 			$player_name = $player['player_name'];
@@ -418,7 +417,7 @@ class PointsTrackerRepository extends Repository{
 			);
 		}
 		
-		foreach($score_data as $game_data){
+		foreach($games as $game_data){
 			if($game_data['score_red_team'] > $game_data['score_blue_team']){
 				$winners = explode('|', $game_data['team_red']);
 				$losers = explode('|', $game_data['team_blue']);
@@ -429,13 +428,6 @@ class PointsTrackerRepository extends Repository{
 			}
 			
 			$point_diff = abs($game_data['score_red_team'] - $game_data['score_blue_team']);
-			
-			if($game_data['score_red_team'] > 50 || $game_data['score_blue_team'] > 50){
-				$isOverpoints = true;
-			}
-			else{
-				$isOverpoints = false;
-			}
 			
 			foreach($winners as $player_name){
 				
@@ -449,16 +441,16 @@ class PointsTrackerRepository extends Repository{
 				$player_stats[$player_name]['score'] += $awarded_score;				
 				$player_stats[$player_name]['games_played']++;
 				
-				if($isOverpoints){
-					$player_stats[$player_name]['score'] += 2;
+				if($game_data['isOverpoints']){
+					$player_stats[$player_name]['score'] += 3;
 				}
 			}
 			
 			foreach($losers as $player_name){
 				$player_stats[$player_name]['games_played']++;
 				
-				if($isOverpoints){
-					$player_stats[$player_name]['score'] += 2;
+				if($game_data['isOverpoints']){
+					$player_stats[$player_name]['score'] += 3;
 				}
 			}
 		
@@ -472,7 +464,8 @@ class PointsTrackerRepository extends Repository{
 		return $player_stats;
 	}
 	
-
+	
+	//Gets the win % for all players
 	public function getAllPlayersWithStats() {
 		$conn = self::connection();
 		
@@ -485,7 +478,7 @@ class PointsTrackerRepository extends Repository{
 		
 		$player_stats = array();
 		
-		$score_data = $result->fetchAll();
+		$games = $result->fetchAll();
 		
 		$players = $this->getAllPlayers();
 		
@@ -500,7 +493,7 @@ class PointsTrackerRepository extends Repository{
 		
 		
 		//Calculate the number of games won and played by each player
-		foreach($score_data as $game_data){
+		foreach($games as $game_data){
 			if($game_data['score_red_team'] > $game_data['score_blue_team']){
 				$winners = explode('|', $game_data['team_red']);
 				$losers = explode('|', $game_data['team_blue']);
@@ -540,7 +533,7 @@ class PointsTrackerRepository extends Repository{
 		
 		
 		return array('player_stats' => $player_stats,
-					 'score_data' => $score_data
+					 'score_data' => $games
 					);
 	}
 	
