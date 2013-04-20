@@ -292,6 +292,9 @@ function revertDraggable($selector) {
 }
 
 function usePlayersFromLastGame(){
+	
+	$(".players-reset").click();
+	
 	makeAPICall('GET', "PointsTracker" , 'getPlayersFromLastGame', null, function(response){
 		if(response.success){
 			$(".use-same-players").hide();
