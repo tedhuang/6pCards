@@ -10,6 +10,33 @@ var team_blue = new Array();
 $(document).ready(function(){
 	
 	$(".players-submit").click(function(){
+		if(players_selected.length >MAX_PLAYERS_PER_TEAM*2 ){
+			var player_count = 0;
+			var shuffled_players = shuffle(players_selected);
+
+			players_selected = [];
+			
+			for(i=0; i<MAX_PLAYERS_PER_TEAM*2 ; i++){
+				players_selected.push(shuffled_players[i]);
+			}
+			
+			$(".player-container.SELECTED").each(function(){
+				$(this).removeClass("SELECTED");
+				$(this).find(".checkbox").hide();
+			});
+			
+			for(i=0; i<MAX_PLAYERS_PER_TEAM*2 ; i++){
+				$(".player-container").each(function(){
+					if($(this).attr('title') == players_selected[i] ){
+						$(this).addClass("SELECTED");
+					}
+				});				
+			}
+			
+			console.log(players_selected);
+		}
+
+		
 		startTeamSelection();
 	});	
 	
@@ -35,23 +62,48 @@ $(document).ready(function(){
 				players_selected.pop( $(this).attr("title") );
 			}
 			else{
-				if(players_selected.length != MAX_PLAYERS_PER_TEAM*2){
-					$(this).addClass("SELECTED");
-					$(this).find('.checkbox').show();
-					players_selected.push( $(this).attr("title") );
-					
-					if(players_selected.length == MAX_PLAYERS_PER_TEAM*2 ){
-						$(".players-controls").show();
-					}
+				
+				$(this).addClass("SELECTED");
+				$(this).find('.checkbox').show();
+				players_selected.push( $(this).attr("title") );
+				
+				if(players_selected.length == MAX_PLAYERS_PER_TEAM*2 ){
+					$(".players-controls").show();
 				}
-				else{
-					alert("Max players reached");
-				}
+				
+				
+//				if(players_selected.length != MAX_PLAYERS_PER_TEAM*2){
+//					$(this).addClass("SELECTED");
+//					$(this).find('.checkbox').show();
+//					players_selected.push( $(this).attr("title") );
+//					
+//					if(players_selected.length == MAX_PLAYERS_PER_TEAM*2 ){
+//						$(".players-controls").show();
+//					}
+//				}
+//				else{
+//
+//					
+////					alert("Max players reached");
+//				}
 			}
 		}
 	});	
 
 });
+
+function shuffle(array) {
+    var tmp, current, top = array.length;
+
+    if(top) while(--top) {
+    	current = Math.floor(Math.random() * (top + 1));
+    	tmp = array[current];
+    	array[current] = array[top];
+    	array[top] = tmp;
+    }
+
+    return array;
+}
 
 
 function startTeamSelection(){
