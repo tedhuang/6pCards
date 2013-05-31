@@ -8,10 +8,12 @@ class DashingController{
 	
 	const AUTH_TOKEN = "tedsdashboard123";
 	
+	
 	public function sendNewGame($team_1, $team_2){
 		try {
 			$ch = curl_init();
-			$url = "http://localhost:3030/widgets/team1pts";
+			$url = Kurogo::getSiteVar("DASHING_BASE_URL","settings") . "/widgets/team1pts";
+			//"http://localhost:3030/widgets/team1pts";
 			
 			$fields = array("auth_token" => self::AUTH_TOKEN, "items" => $team_1);
 			$json = json_encode($fields);
@@ -28,7 +30,7 @@ class DashingController{
 			$result = curl_exec($ch);
 			
 			
-			$url = "http://localhost:3030/widgets/team2pts";
+			$url = Kurogo::getSiteVar("DASHING_BASE_URL","settings")."/widgets/team2pts";
 			
 			$fields = array("auth_token" => self::AUTH_TOKEN, "items" => $team_2);
 			$json = json_encode($fields);
@@ -56,7 +58,7 @@ class DashingController{
 	public function sendPlacement($placement_array){
 		try {
 			$ch = curl_init();
-			$url = "http://localhost:3030/widgets/positions";
+			$url = Kurogo::getSiteVar("DASHING_BASE_URL","settings") . "/widgets/positions";
 			
 			$fields = array("auth_token" => self::AUTH_TOKEN, "items" => $placement_array);
 			$json = json_encode($fields);
@@ -99,7 +101,7 @@ class DashingController{
 		
 		try {
 			$ch = curl_init();
-			$url = "http://localhost:3030/widgets/".$widget_id;
+			$url = Kurogo::getSiteVar("DASHING_BASE_URL","settings")."/widgets/".$widget_id;
 
 			$fields = array("auth_token" => self::AUTH_TOKEN, "text" => $score, "items" => $players);
 			$json = json_encode($fields);
