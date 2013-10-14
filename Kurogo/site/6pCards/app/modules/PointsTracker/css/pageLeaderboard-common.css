@@ -13,6 +13,12 @@ body{
 
 .leaderboard.results li{
 	position:relative;
+	height: 85px;
+}
+.leaderboard.results li .front,
+.leaderboard.results li .back{
+	width: 100%;
+	height: 100%;
 }
 
 .leaderboard.results li:first-child .score-background{
@@ -50,7 +56,26 @@ body{
 	text-shadow: #fff 0.1em 0.1em 0.2em
 }
 
-.win-ratio{
+.stat-details{
+	height: 100%;
+	width: 100%;
+	padding: 10px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+.stat-details table{
+	margin: 0;
+}
+
+.stat-details table td{
+	padding: 0px;
+	font-size: 1.2em;
+	color: #fff;
+}
+
+.player-score{
 	margin-left: 10px;
 	font-size: 2.8em;
 	color: #666;

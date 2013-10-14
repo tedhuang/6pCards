@@ -5,7 +5,7 @@
 	<li>
 		<div class="score-background"></div>
 		<div class="win-ratio">
-			{round($score_data.score)}
+			{round($score_data.score*100)/100}
 		</div>
 		<img class="display-picture" src="http://www.gravatar.com/avatar/{md5(strtolower(trim({$score_data.gravatar_email})))}?s=45&d=mm" width=45/>
 		<div class="stat-text">{$player_name}</div>

@@ -17,15 +17,27 @@ $(document).ready(function(){
 			$("#chart").slideDown(1500, "jswing", function(){
 				drawChart();
 			});
-			
-			
 		}
 	});
-	
-	
-	
-});
 
+	$(".leaderboard").find('li').find(".front").click(function(){
+		if($(this).hasClass('FLIPPED')){
+			$(this).revertFlip();
+			$(this).removeClass("FLIPPED");
+		}
+		else{
+			$(this).addClass('FLIPPED');
+			back = $(this).siblings(".back");
+
+			$(this).flip({
+				direction: 'tb',
+				content: back,
+				color: "#666",
+				speed: 300
+			})
+		}
+	});
+});
 
 function drawChart(){
 	nv.addGraph(function() {

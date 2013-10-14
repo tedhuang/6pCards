@@ -11,6 +11,10 @@ $(document).ready(function(){
 	placement_array[5] = null;
 	
 	$(".player-container").click(function(){
+		if($(".status").text() == "COMPLETE"){
+			return;
+		}
+			
 		var player_name = $(this).attr('title');
 		
 		if($(this).hasClass("PLACED")){
@@ -46,8 +50,6 @@ $(document).ready(function(){
 				
 				var message = generatePrompt(getValidPlacement()); 
 				$(".score-control-message").html(message);
-				
-				
 			}
 			else{
 				alert("No more valid placements");
@@ -63,6 +65,7 @@ $(document).ready(function(){
 	$(".score-submit").click(function(){
 		if(isPlacementComplete()){
 			$(this).html("<div class='loadImg'><img src='./common/images/loader.gif' width=30 /></div>");
+			$(this).attr("disabled", "disabled");
 			sendScore(placement_array);
 		}
 		else{
@@ -77,7 +80,6 @@ $(document).ready(function(){
 	});
 	
 	$(".delete_score").live('click',function(){
-		$(this).parents("tr").fadeOut(3000);
 		deleteScore($(this).attr('title'));
 	});
 });
@@ -89,7 +91,6 @@ function isPlacementComplete(){
 			return false;
 		}
 	}
-	
 	return true;
 }
 
@@ -101,7 +102,6 @@ function getValidPlacement(){
 			return i;
 		}
 	}
-	
 	return false;
 }
 
@@ -114,7 +114,6 @@ function getPlayerPlacement(player_name){
 			}
 		}
 	}
-	
 	return false;
 }
 
@@ -136,15 +135,10 @@ function generatePrompt(placement){
 }
 
 function sendScore(placement_array){
-	
-	 var params = {"placement" :  JSON.stringify(placement_array), "game_id" : getUrlVars()['game_id']};
-	 
-	//console.log(placement_array);
-	 
+	var params = {"placement" :  JSON.stringify(placement_array), "game_id" : getUrlVars()['game_id']};
 	makeAPICall('POST', "PointsTracker" , 'sendScore', params, function(response){
+		$(".score-submit").attr('disabled', false);
 		if(response.success){
-			
-			//console.log(response);
 			var new_score = "<tr><td class='round_num'>"+($(".round_num").length+1)+"</td>" +
 								"<td>"+response.score_result.scores.RED+"</td>" +
 								"<td>"+response.score_result.scores.BLUE+"</td>" +
@@ -170,10 +164,11 @@ function sendScore(placement_array){
 function deleteScore(score_id){
 	var r=confirm("Are you sure?");
 	if (r==true){
+		$(".delete_score[title="+score_id+"]").parents("tr").fadeOut(3000);
 		makeAPICall('POST', "PointsTracker" , 'removeScore', {'score_id': score_id}, function(response){
 			if(response.success){
-				window.location.reload();
-				//$(".delete_score[title="+score_id+"]").parents("tr").remove();
+				// window.location.reload();
+				$(".delete_score[title="+score_id+"]").parents("tr").remove();
 			}
 			else{
 				alert("Failed to delete score. Error: " + response.message);
@@ -197,8 +192,6 @@ function resetScoreControl(){
 	
 	var message = generatePrompt(getValidPlacement());
 	$(".score-control-message").html(message);
-	
-
 }
 
 

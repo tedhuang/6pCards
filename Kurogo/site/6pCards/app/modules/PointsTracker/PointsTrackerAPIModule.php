@@ -4,7 +4,7 @@ Kurogo::includePackage('PointsTracker');
 
 class PointsTrackerAPIModule extends APIModule {
 	
-	protected $PointsTrackerRepository;
+	protected $pointsTrackerService;
 	
     protected $id = 'PointsTracker';
     protected $vmin = 1;
@@ -16,7 +16,7 @@ class PointsTrackerAPIModule extends APIModule {
     protected function initializeForCommand()  {
     	
 		$session = $this->getSession();    	
-		$this->PointsTrackerRepository = Repository::factory("PointsTrackerRepository", null);
+		$this->pointsTrackerService = PointsTrackerServiceImpl::factory();
 
         switch ($this->command) {
         	case "sendScore":
@@ -32,9 +32,8 @@ class PointsTrackerAPIModule extends APIModule {
 					$message = "Parameters invalid. game_id: " + $game_id;					
 				}
 				else{
-					
 	        		//Make sure you can only add score if game is not complete
-	        		if(!$this->PointsTrackerRepository->isGameComplete($game_id)){
+	        		if(!$this->pointsTrackerService->isGameComplete($game_id)){
 	        			
 	        			$p_data = array();
     					for($i = 0; $i < count($placement); $i++){
@@ -48,7 +47,7 @@ class PointsTrackerAPIModule extends APIModule {
 						}
 
 	        			//Add a new score value with parameters
-	        			$score_result = $this->PointsTrackerRepository->addScore($game_id, $p_data);
+	        			$score_result = $this->pointsTrackerService->addScore($game_id, $p_data);
 	        			
 		        		if( $score_result !== false ){
 		        			$success = true;
@@ -58,10 +57,10 @@ class PointsTrackerAPIModule extends APIModule {
 
 							
 		        			//Check if adding score caused game to complete
-		        			if($this->PointsTrackerRepository->isGameComplete($game_id)){
+		        			if($this->pointsTrackerService->isGameComplete($game_id)){
 		        				$isComplete = true;
 		        				
-		        				if( !$this->PointsTrackerRepository->updateGame($game_id, "COMPLETE", date("Y-m-d H:i:s"))){
+		        				if( !$this->pointsTrackerService->updateGame($game_id, "COMPLETE", date("Y-m-d H:i:s"))){
 		        					$message = "update status failed";
 		        				}
 		        			}
@@ -87,7 +86,7 @@ class PointsTrackerAPIModule extends APIModule {
         		$score_id = $this->getArg('score_id', null);
         		
         		if(!is_null($score_id)){
-        			$this->PointsTrackerRepository->deleteScore($score_id);
+        			$this->pointsTrackerService->deleteScore($score_id);
         			$success = true;
         		}
         		else{
@@ -99,7 +98,7 @@ class PointsTrackerAPIModule extends APIModule {
             	
         	case "createPlayer":
         		$player_name = $this->getArg('player_name');
-        		if( $this->PointsTrackerRepository->createPlayer($player_name) ){
+        		if( $this->pointsTrackerService->createPlayer($player_name) ){
         			$success = true;
         		}
         		
@@ -109,7 +108,7 @@ class PointsTrackerAPIModule extends APIModule {
         	case "getPlayersFromLastGame":
         		$success = false;
         		$message = "no message";
-        		$last_game = $this->PointsTrackerRepository->getLastGame();
+        		$last_game = $this->pointsTrackerService->getLastGame();
         		$players = array();
         		
         		if($last_game){
@@ -145,7 +144,7 @@ class PointsTrackerAPIModule extends APIModule {
 				$players["BLUE"] = json_decode($blue_team);
 				
 				if(count($players["RED"]) == 3 || count($players["BLUE"]) == 3){
-					$curr_game_id = $this->PointsTrackerRepository->createGame($players, $points_to_win);
+					$curr_game_id = $this->pointsTrackerService->createGame($players, $points_to_win);
 					
 					$this->updateDashboardNewGame($players["RED"], $players["BLUE"]);
 					
@@ -182,14 +181,14 @@ class PointsTrackerAPIModule extends APIModule {
     	$team_2_array = array();
     	
     	foreach($team_1 as $player_name){
-    		$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+    		$player = $this->pointsTrackerService->getPlayerByName($player_name);
     		array_push($team_1_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
     		
     		Kurogo::log(LOG_ALERT, "player: " . $player_name, 'module');
     	}
     	
     	foreach($team_2 as $player_name){
-    		$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+    		$player = $this->pointsTrackerService->getPlayerByName($player_name);
     		array_push($team_2_array, array('label' => $player_name, 'value' =>"http://www.gravatar.com/avatar/".md5(strtolower(trim($player['gravatar_email'])))."?s=100&d=mm"));
     		
     		Kurogo::log(LOG_ALERT, "player: " . $player_name, 'module');
@@ -209,7 +208,7 @@ class PointsTrackerAPIModule extends APIModule {
 			
 			$temp = explode('-',$placement[$i]);
 			$player_name = $temp[0];
-			$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+			$player = $this->pointsTrackerService->getPlayerByName($player_name);
 			
 			$item = array();
 			$item['label'] = ($i+1). ". " .$player_name;

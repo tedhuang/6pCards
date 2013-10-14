@@ -5,44 +5,31 @@ Kurogo::includePackage('PointsTracker');
 class PointsTrackerWebModule extends WebModule
 {
 	protected $id='PointsTracker';
-	protected $PointsTrackerRepository;
+	protected $pointsTrackerService;
+
+	private $SCORE_ALGO_VERSION = 2; //version of the player score calculation algorithm
 	
 	protected function initialize() {
-		$this->PointsTrackerRepository = Repository::factory("PointsTrackerRepository", null);
+		$this->pointsTrackerService = PointsTrackerServiceImpl::factory();
 	}
   
 	protected function initializeForPage() {
-  		
-		//$this->addJQuery();
-		$session = $this->getSession();
-		
-		
+  		$session = $this->getSession();
+
 		/* Load Javascript CSS Libraries */
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery.ui.touch-punch.min.js');
 		$this->addInternalJavascript('/common/javascript/lib/json2.js');
 		$this->addInternalJavascript('/common/javascript/lib/jquery.easing.1.3.js');
-		
-//		$this->addInternalJavascript('/common/javascript/lib/d3.v2.min.js');
-//		$this->addInternalJavascript('/common/javascript/lib/swipe.js');
-//		$this->addInternalJavascript('/common/javascript/lib/jquery.validate.min.js');
-		
+
+		$this->addExternalCSS('http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css');
 		$this->addInternalCSS('/common/javascript/lib/jquery-ui-1.9.2.custom/css/pepper-grinder/jquery-ui-1.9.2.custom.css');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,500,300');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto:700,500,400');
 		$this->addExternalCSS('http://fonts.googleapis.com/css?family=Roboto+Condensed');
-
-//		$jennysIP = "75.157.140.7";
-//		if($_SERVER['REMOTE_ADDR'] == $jennysIP && $this->page != "piggysPage"){
-//			$this->redirectTo('piggysPage');
-//		}
-
 		
 		switch ($this->page) {
-			case "piggysPage":
-				
-				break;
 			case 'index':
 				$game_list = array( 'title' => 'Game List', 
 									'url' => 'pageGameList', 
@@ -70,37 +57,36 @@ class PointsTrackerWebModule extends WebModule
 				break;
 			
 			case 'pageGameList':
-				$activeGames = $this->PointsTrackerRepository->getActiveGames();
-				$inactiveGames = $this->PointsTrackerRepository->getInactiveGames();
+				$activeGames = $this->pointsTrackerService->getActiveGames();
+				$inactiveGames = $this->pointsTrackerService->getInactiveGames();
 				$this->assign("inactiveGames", $inactiveGames);
 				$this->assign("activeGames", $activeGames);
 				break;
 				
 			case 'pageCreateGame':
-				$players = $this->PointsTrackerRepository->getAllPlayers();
+				$players = $this->pointsTrackerService->getAllPlayers();
 				$this->assign("players", $players);
 				break;
 				
 			case 'pageGame':
 				$game_id = $this->getArg("game_id");
-				$game =  $this->PointsTrackerRepository->getGameById($game_id);
-				$score_record = $this->PointsTrackerRepository->getScoreByGame($game_id, true);
+				$game =  $this->pointsTrackerService->getGameById($game_id);
+				$score_record = $this->pointsTrackerService->getScoreByGame($game_id, true);
 				
 				if($game === false){
 					$this->redirectTo('pageError', array("message" => "Game does not exist"));
 				}
 				
 				foreach( explode('|',$game['team_red']) as $name){
-					$player =  $this->PointsTrackerRepository->getPlayerByName($name);
+					$player =  $this->pointsTrackerService->getPlayerByName($name);
 					$game['t_red'][$name] = $player;
 				}
 								
 				foreach( explode('|',$game['team_blue']) as $name){
-					$player =  $this->PointsTrackerRepository->getPlayerByName($name);
+					$player =  $this->pointsTrackerService->getPlayerByName($name);
 					$game['t_blue'][$name] = $player;
 				}
-				
-				
+
 				$deviceClassifier = Kurogo::deviceClassifier();
 		        $this->assign("isTablet", $deviceClassifier->isTablet());
 				$this->assign("score_record", $score_record);
@@ -109,17 +95,25 @@ class PointsTrackerWebModule extends WebModule
 			
 			case 'pageScoreboard':
 				$game_id = $this->getArg("game_id");
-				$game =  $this->PointsTrackerRepository->getGameById($game_id);
-				$scores =  $this->PointsTrackerRepository->getScoreByGame($game_id, true);
+				$game =  $this->pointsTrackerService->getGameById($game_id);
+				$scores =  $this->pointsTrackerService->getScoreByGame($game_id, true);
 				
 				if(count($scores) < 2){
 					$this->redirectTo('pageError', array("message" => "Data not available"));
 				}
-				
-				
-				$score_data_js = $this->generateScoreGraphData($scores, explode('|', $game['team_red']), explode('|', $game['team_blue']) );
 
+				$team_red = explode('|', $game['team_red']);
+				$team_blue = explode('|', $game['team_blue']);
+
+				$score_data_js = $this->generateScoreGraphData($scores, $team_red, $team_blue);
 				$round_duration_data = $this->getRoundDuration($scores,$game['timestamp'] );
+
+				//TODO: display score calculation for the last game
+				// //Get score data to display
+				// $score_data = $this->getPlayerScore($this->SCORE_ALGO_VERSION);
+
+				// //filter out only the players that are in the last game
+
 				
 				$this->assign("game", $game);
 				$this->assign("scores", $scores);
@@ -133,61 +127,33 @@ class PointsTrackerWebModule extends WebModule
 				break;
 			
 			case 'pageStats':
-				//$score_array = $this->PointsTrackerRepository->getGameCompletionStats();
-
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/lib/d3.v2.js');			
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/nv.d3.js');			
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/tooltip.js');			
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/utils.js');			
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/legend.js');			
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/axis.js');	
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/scatter.js');	
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/line.js');	
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/historicalBar.js');
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/discreteBar.js');		
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/discreteBarChart.js');		
-				$this->addInternalCSS("/common/javascript/lib/nvd3/src/nv.d3.css");
+				$player_score = $this->pointsTrackerService->getPlayerScore($this->SCORE_ALGO_VERSION);
 				break;
 			
-			case 'iframeLeaderboard':
 			case 'pageLeaderboard':
-				$data = $this->PointsTrackerRepository->getAllPlayersWithStats();
-				
-				
-				
-				
-				$win_ratio = array();
-				foreach($data['player_stats'] as $player_name => &$stats){
-					$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
+				$data = $this->pointsTrackerService->getAllPlayersWithStats($this->SCORE_ALGO_VERSION);
+				$player_score = array();
 
+				foreach($data['player_stats'] as $player_name => &$stats){
+					$player = $this->pointsTrackerService->getPlayerByName($player_name);
 					$stats['gravatar_email'] = $player['gravatar_email'];
-					$stats['win_ratio'] = $stats['games_won']/$stats['games_played'];
-					$win_ratio[$player_name] = $stats['games_won']/$stats['games_played'];
+
+					//Check for division by zero
+					if($stats['games_played']!=0){
+						$stats['win_ratio'] = $stats['games_won']/$stats['games_played'];
+						$player_score[$player_name] = $stats['score'];
+					}
+					else{
+						$stats['win_ratio'] = 0;
+						$player_score[$player_name] = 0;
+					}
 				}
 				
 				//sort array by win ratio
-				array_multisort($win_ratio, SORT_DESC, $data['player_stats']);
+				array_multisort($player_score, SORT_DESC, $data['player_stats']);
 				
-
-
-
-
-				$player_score = $this->PointsTrackerRepository->getPlayerScore();
-				$score = array();
-				
-				foreach($player_score as $player_name => &$p_score){
-					$player = $this->PointsTrackerRepository->getPlayerByName($player_name);
-					$p_score['gravatar_email'] = $player['gravatar_email']; 
-					$score[$player_name] = $p_score['score'];
-				}
-				array_multisort($score, SORT_DESC, $player_score);
-				
-
-
-
-
 				$json_data =  $this->generateWinRatioGraphJson($data);
-				$this->assign('player_score', $player_score);
+				// $this->assign('player_score', $player_score);
 				$this->assign('player_stats' , $data['player_stats']);	
 				$this->addInlineJavascript($json_data);
 				
@@ -199,12 +165,24 @@ class PointsTrackerWebModule extends WebModule
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/axis.js');	
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/scatter.js');	
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/line.js');	
-				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/historicalBar.js');
-//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/multiBar.js');	
-//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/multiBarChart.js');			
+				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/historicalBar.js');	
 				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/linePlusBarChart.js');		
-//				$this->addInternalJavascript('/common/javascript/lib/nvd3/src/models/cumulativeLineChart.js');		
 				$this->addInternalCSS("/common/javascript/lib/nvd3/src/nv.d3.css");
+				$this->addInternalJavascript('/common/javascript/lib/jquery.flip.min.js');
+				break;
+
+			case 'iframeLeaderboard':
+				$player_score = $this->pointsTrackerService->getPlayerScore(2);
+				$score = array();
+				
+				foreach($player_score as $player_name => &$p_score){
+					$player = $this->pointsTrackerService->getPlayerByName($player_name);
+					$p_score['gravatar_email'] = $player['gravatar_email']; 
+					$score[$player_name] = $p_score['score'];
+				}
+				array_multisort($score, SORT_DESC, $player_score);
+				
+				$this->assign('player_score', $player_score);
 				break;
 			
 			case 'pageProfile':

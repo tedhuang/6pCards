@@ -5,8 +5,7 @@
 
 .game-details-container{
 	padding: 10px;
-	margin: 10px;
-	//border: 1px solid #fff;
+	margin: 15px 10px;
 	position: relative;
 	height: 50px;
 	background: rgba(255,255,255,0.3);
@@ -57,18 +56,15 @@
 .score-table{
 	width: 100%;
 	height: 100%;
-	//border: 2px solid #C4B9A2;
 	text-align:center;
-	//background: rgba(255,255,255,0.3);
-	
 	padding: 5px;
+	margin-bottom: 15px;
 	background: rgba(255,255,255,0.3);
 	box-shadow: inset 1px 1px 3px #000;
 }
 
 .score-table th{
 	font-size: 1.2em;
-	//font-weight:bold;
 	text-align:center;
 	color: #fff;
 	font-weight:bold;
@@ -79,16 +75,16 @@
 	color: #fff;
 }
 
-.score-table td img.delete_score{
-	width: 15px;
-	height: 15p;
+.score-table .delete_score{
+	font-size: 1.1em;
 	cursor:pointer;
 	opacity: 0.5;
+	color: rgba(0,0,0,0.8);
 }
 
-.score-table td img.delete_score:hover,
-.score-table td img.delete_score:active{
-	opacity: 0.9;
+.score-table .delete_score:hover,
+.score-table .delete_score:active{
+	color: #000;
 }
 
 .score-table td.round_num{
@@ -99,9 +95,8 @@
 }
 
 .score-control{
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	padding: 10px;
-	//border: 1px solid #fff;
 	background: rgba(255,255,255,0.3);
 	box-shadow: inset 1px 1px 3px #000;
 }

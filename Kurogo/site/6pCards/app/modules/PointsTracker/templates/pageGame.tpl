@@ -22,15 +22,14 @@
 			<td class="round_num">{$score.count}</td>
 			<td>{$score.score_red_team}</td>
 			<td>{$score.score_blue_team}</td>
-			<td><img class="delete_score" src="./common/images/remove.png" title="{$score.score_id}"/></td>
+			<td><i class="delete_score icon-remove-sign" title="{$score.score_id}"></i></td>
 		</tr>
 		{/foreach}
 	</table>
-
 	<div class="score-control content-container">
-	
+		{if $game.status!="COMPLETE"}
 		<div class="score-control-message">Select 1st place</div>
-		
+		{/if}
 		<div class="players-container">
 			{foreach from=$game.t_red item=player}
 				<div class="player-container T_RED" title="{$player.player_name}">
@@ -39,7 +38,6 @@
 					<div class="placement">1</div>
 				</div>
 			{/foreach}
-			
 			{foreach from=$game.t_blue item=player}
 				<div class="player-container T_BLUE" title="{$player.player_name}">
 					<img src="http://www.gravatar.com/avatar/{md5(strtolower(trim($player.gravatar_email)))}?s=200&d=mm" width=80/>
@@ -58,18 +56,8 @@
 		{else}
 			<button class="score-submit fullButton">Submit Score</button>
 		{/if}
-		
 	</div>
-	
-	
-	
-	
 </div>
-
-
-
-
-
 {*include file="findInclude:common/templates/footer.tpl"*}
 
 
